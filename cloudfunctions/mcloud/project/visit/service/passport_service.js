@@ -8,15 +8,27 @@ const BaseProjectService = require('./base_project_service.js');
 const cloudBase = require('../../../framework/cloud/cloud_base.js');
 const UserModel = require('../model/user_model.js');
 const dataUtil = require('../../../framework/utils/data_util.js');
+const md5Lib = require('../../../framework/lib/md5_lib.js');
+const util = require('../../../framework/utils/util.js');
 
 class PassportService extends BaseProjectService {
+
+	// 密码加密
+	encryptPassword(password, salt) {
+		if (!salt) {
+			salt = util.randomString(6);
+		}
+		const hash = md5Lib.md5(password + salt);
+		return { hash, salt };
+	}
 
 	// 注册
 	async register(userId, {
 		mobile,
 		name,
 		forms,
-		status
+		status,
+		password
 	}) {
 		// 判断是否存在
 		let where = {
@@ -32,6 +44,12 @@ class PassportService extends BaseProjectService {
 		cnt = await UserModel.count(where);
 		if (cnt > 0) this.AppError('该手机已注册');
 
+		// 密码加密
+		let passwordData = {};
+		if (password) {
+			passwordData = this.encryptPassword(password);
+		}
+
 		// 入库
 		let data = {
 			USER_MINI_OPENID: userId,
@@ -40,10 +58,117 @@ class PassportService extends BaseProjectService {
 			USER_OBJ: dataUtil.dbForms2Obj(forms),
 			USER_FORMS: forms,
 			USER_STATUS: Number(status)
+		};
+
+		// 添加密码相关字段
+		if (password) {
+			data.USER_PASSWORD = passwordData.hash;
+			data.USER_SALT = passwordData.salt;
 		}
+
 		await UserModel.insert(data);
 
 		return await this.login(userId);
+	}
+
+	// 密码登录
+	async passwordLogin(username, password) {
+		// 查找用户
+		let where = {
+			$or: [
+				{ USER_MOBILE: username },
+				{ USER_NAME: username }
+			]
+		};
+		let fields = 'USER_ID,USER_MINI_OPENID,USER_NAME,USER_PIC,USER_STATUS,USER_PASSWORD,USER_SALT';
+		let user = await UserModel.getOne(where, fields);
+
+		if (!user) {
+			this.AppError('用户不存在');
+		}
+
+		if (user.USER_STATUS !== UserModel.STATUS.COMM) {
+			this.AppError('用户状态异常');
+		}
+
+		// 验证密码
+		if (!user.USER_PASSWORD) {
+			this.AppError('用户未设置密码');
+		}
+
+		const passwordData = this.encryptPassword(password, user.USER_SALT);
+		if (passwordData.hash !== user.USER_PASSWORD) {
+			this.AppError('密码错误');
+		}
+
+		// 生成token
+		let token = {
+			id: user.USER_MINI_OPENID,
+			key: user.USER_ID,
+			name: user.USER_NAME,
+			pic: user.USER_PIC,
+			status: user.USER_STATUS
+		};
+
+		// 异步更新最近更新时间
+		let dataUpdate = {
+			USER_LOGIN_TIME: this._timestamp
+		};
+		UserModel.edit({ USER_MINI_OPENID: user.USER_MINI_OPENID }, dataUpdate);
+		UserModel.inc({ USER_MINI_OPENID: user.USER_MINI_OPENID }, 'USER_LOGIN_CNT', 1);
+
+		return { token };
+	}
+
+	// 发送验证码
+	async sendCode(mobile) {
+		// 生成验证码
+		const code = util.randomNumber(6);
+
+		// 这里应该调用短信服务发送验证码
+		// 由于是示例，我们只返回成功
+		console.log(`发送验证码 ${code} 到 ${mobile}`);
+
+		// 存储验证码到缓存
+		// 实际项目中应该使用redis或其他缓存
+		// 这里我们暂时跳过
+
+		return { success: true };
+	}
+
+	// 验证验证码
+	async verifyCode(mobile, code) {
+		// 这里应该验证缓存中的验证码
+		// 由于是示例，我们只返回成功
+		console.log(`验证验证码 ${code} 对于 ${mobile}`);
+
+		return { success: true };
+	}
+
+	// 重置密码
+	async resetPassword(mobile, password) {
+		// 查找用户
+		let where = {
+			USER_MOBILE: mobile
+		};
+		let user = await UserModel.getOne(where);
+
+		if (!user) {
+			this.AppError('用户不存在');
+		}
+
+		// 密码加密
+		const passwordData = this.encryptPassword(password);
+
+		// 更新密码
+		let data = {
+			USER_PASSWORD: passwordData.hash,
+			USER_SALT: passwordData.salt
+		};
+
+		await UserModel.edit(where, data);
+
+		return { success: true };
 	}
 
 	/** 获取手机号码 */

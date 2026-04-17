@@ -29,9 +29,6 @@
 		<block wx:if="{{admin.type==1||admin.type==0}}">
 			<view class="item" bindtap="url" data-url="../../user/list/admin_user_list"> <text class="icon-group_fill text-green"></text> <text class="text-black">用户管理</text>
 			</view>
-
-			<view class="item" bindtap="url" data-url="../../news/list/admin_news_list"> <text class="icon-formfill text-darkgreen"></text> <text class="text-black">公告管理</text>
-			</view>
 		</block>
 
 		<view wx:if="{{admin.type==1||admin.type==0||admin.type==3}}" class="item" bindtap="url" data-url="../../task/scan/admin_task_scan"> <text class="icon-scan text-pink text-bold"></text> <text class="text-black">来访核验</text>

@@ -25,6 +25,9 @@ UserModel.DB_STRUCTURE = {
 	USER_FORMS: 'array|true|default=[]',
 	USER_OBJ: 'object|true|default={}',
 
+	USER_PASSWORD: 'string|false|comment=密码',
+	USER_SALT: 'string|false|comment=密码盐',
+
 	USER_LOGIN_CNT: 'int|true|default=0|comment=登陆次数',
 	USER_LOGIN_TIME: 'int|false|comment=最近登录时间', 
 

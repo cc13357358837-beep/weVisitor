@@ -84,6 +84,65 @@ class PassportController extends BaseProjectController {
 		return await service.login(this._userId);
 	}
 
+	/** 密码登录 */
+	async passwordLogin() {
+		// 数据校验
+		let rules = {
+			username: 'must|string|min:1|max:50|name=用户名',
+			password: 'must|string|min:6|max:20|name=密码'
+		};
+
+		// 取得数据
+		let input = this.validateData(rules);
+
+		let service = new PassportService();
+		return await service.passwordLogin(input.username, input.password);
+	}
+
+	/** 发送验证码 */
+	async sendCode() {
+		// 数据校验
+		let rules = {
+			mobile: 'must|mobile|name=手机'
+		};
+
+		// 取得数据
+		let input = this.validateData(rules);
+
+		let service = new PassportService();
+		return await service.sendCode(input.mobile);
+	}
+
+	/** 验证验证码 */
+	async verifyCode() {
+		// 数据校验
+		let rules = {
+			mobile: 'must|mobile|name=手机',
+			code: 'must|string|len:6|name=验证码'
+		};
+
+		// 取得数据
+		let input = this.validateData(rules);
+
+		let service = new PassportService();
+		return await service.verifyCode(input.mobile, input.code);
+	}
+
+	/** 重置密码 */
+	async resetPassword() {
+		// 数据校验
+		let rules = {
+			mobile: 'must|mobile|name=手机',
+			password: 'must|string|min:6|max:20|name=密码'
+		};
+
+		// 取得数据
+		let input = this.validateData(rules);
+
+		let service = new PassportService();
+		return await service.resetPassword(input.mobile, input.password);
+	}
+
 }
 
 module.exports = PassportController;

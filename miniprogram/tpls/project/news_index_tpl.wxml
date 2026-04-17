@@ -2,7 +2,7 @@
 	<view wx:if="{{!isLoad}}" class="margin-top load loading text-l load-project"></view>
 	<block wx:else>
 
-		<cmpt-comm-list type="news-list" search="{{search||''}}" _params="{{_params}}" _menus="{{sortMenus}}" _items="{{sortItems}}" isTotalMenu="{{isTotalMenu}}" route="news/list" topBottom="120" placeholder="搜索标题" bind:list="bindCommListCmpt">
+		<cmpt-comm-list type="news-list" search="{{search||''}}" _params="{{_params}}" _menus="{{sortMenus}}" _items="{{sortItems}}" isTotalMenu="{{isTotalMenu}}" route="news/list" topBottom="120" placeholder="搜索项目名称" bind:list="bindCommListCmpt">
 			<view class="up-project" wx:if="{{showUp}}">
 				<image wx:if="{{upImg}}" mode="widthFix" lazy-load src="{{upImg}}" />
 			</view>

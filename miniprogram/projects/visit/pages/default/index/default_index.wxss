@@ -10,7 +10,8 @@ page {
 }
 
 .top {
-	width: 100%;
+  width: 100%;
+  background-color: blue;
 }
 
 .top image {
@@ -22,7 +23,7 @@ page {
 	padding: 70rpx 50rpx 20rpx;
 	border-top-right-radius: 45rpx;
 	border-top-left-radius: 45rpx;
-	margin-top: -140rpx;
+	margin-top: 140rpx;
 	position: relative;
 	background-color: #F3F3FE;
 	margin-bottom: 100rpx;

@@ -1,5 +1,8 @@
 {
 	"pages": [
+		"pages/login/login",
+		"pages/login/reset/reset",
+		"projects/visit/pages/project/list/project_list",
 		"projects/visit/pages/default/index/default_index",
 		"projects/visit/pages/news/index/news_index",
 		"projects/visit/pages/about/index/about_index",
@@ -56,12 +59,11 @@
 			{
 				"pagePath": "projects/visit/pages/default/index/default_index",
 				"text": "首页",
-				"iconPath": "/projects/visit/images/tabbar/home.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/home_cur.png"
 			},
 			{
 				"pagePath": "projects/visit/pages/news/index/news_index",
-				"text": "公告",
+				"text": "项目查询",
 				"iconPath": "/projects/visit/images/tabbar/news.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/news_cur.png"
 			},

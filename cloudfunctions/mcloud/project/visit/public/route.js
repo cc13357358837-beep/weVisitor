@@ -54,8 +54,6 @@ module.exports = {
  
 	// 内容  
 	'home/list': 'home_controller@getHomeList',
-	'news/list': 'news_controller@getNewsList',
-	'news/view': 'news_controller@viewNews',
 
 	'admin/news_list': 'admin/admin_news_controller@getAdminNewsList',
 	'admin/news_insert': 'admin/admin_news_controller@insertNews#demo',
