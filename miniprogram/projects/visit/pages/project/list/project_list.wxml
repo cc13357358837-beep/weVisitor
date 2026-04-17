@@ -5,14 +5,19 @@
   </view>
   
   <view class="project-list">
-    <view wx:for="{{projectList}}" wx:key="id" class="project-item">
-      <view class="project-header">
-        <text class="project-name">{{item.name}}</text>
-        <!-- <text class="project-code">{{item.code}}</text> -->
+    <view wx:for="{{projectList}}" wx:key="id" class="project-item" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="project-content">
+        <view class="project-header">
+          <text class="project-name">{{item.name}}</text>
+          <!-- <text class="project-code">{{item.code}}</text> -->
+        </view>
+        <view class="project-info">
+          <text class="info-item">施工单位: {{item.headquartersOrganization||'-'}}</text>
+          <text class="info-item">建设地点: {{item.constructionLocation}}</text>
+        </view>
       </view>
-      <view class="project-info">
-        <text class="info-item">施工单位: {{item.headquartersOrganization||'-'}}</text>
-        <text class="info-item">建设地点: {{item.constructionLocation}}</text>
+      <view class="arrow-icon">
+        <text class="arrow">›</text>
       </view>
     </view>
   </view>

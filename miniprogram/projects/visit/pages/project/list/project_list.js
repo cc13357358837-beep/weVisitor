@@ -76,5 +76,12 @@ Page({
       });
       this.getProjectList();
     }
+  },
+
+  goToDetail(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: '/projects/visit/pages/project/detail/project_detail?id=' + id
+    });
   }
 });

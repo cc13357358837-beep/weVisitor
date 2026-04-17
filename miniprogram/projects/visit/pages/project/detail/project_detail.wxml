@@ -1,0 +1,47 @@
+<view class="container">
+  <view class="project-header" wx:if="{{projectData}}">
+    <view class="project-title">
+      <text class="title-text">{{projectData.name}}</text>
+      <!-- <view class="status-badge">{{projectData.status || '进行中'}}</view> -->
+    </view>
+  </view>
+  
+  <view class="project-info" wx:if="{{projectData}}">
+    <view class="info-item">
+      <text class="label">编号</text>
+      <text class="value">{{projectData.code || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">建设地点</text>
+      <text class="value">{{projectData.constructionLocation || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">单位</text>
+      <text class="value">{{projectData.organizationName || '-'}}</text>
+    </view>
+  </view>
+  
+  <view class="equipment-section" wx:if="{{projectData}}">
+    <view class="section-header">
+      <text class="section-title">具体设备</text>
+      <text class="equipment-count">共{{projectData.deviceCount || 0}}台设备  <text class="arrow">></text></text>
+    </view>
+  </view>
+  
+  <view class="acceptance-section" wx:if="{{projectData}}">
+    <view class="section-header">
+      <text class="section-title">验收意见及结论</text>
+    </view>
+    <view class="acceptance-content">
+      <text>{{projectData.acceptanceOpinion || '-'}}</text>
+    </view>
+  </view>
+  
+  <view wx:if="{{isLoading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+  
+  <view wx:if="{{!isLoading && !projectData}}" class="empty">
+    <text>暂无项目数据</text>
+  </view>
+</view>

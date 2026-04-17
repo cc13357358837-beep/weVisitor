@@ -3,6 +3,7 @@
 		"pages/login/login",
 		"pages/login/reset/reset",
 		"projects/visit/pages/project/list/project_list",
+		"projects/visit/pages/project/detail/project_detail",
 		"projects/visit/pages/default/index/default_index",
 		"projects/visit/pages/news/index/news_index",
 		"projects/visit/pages/about/index/about_index",
