@@ -24,7 +24,6 @@
 .search-btn {
   width: 120rpx;
   height: 60rpx;
-  line-height: 60rpx;
   background-color: #0055BE;
   color: white;
   font-size: 28rpx;
@@ -32,14 +31,14 @@
   margin-left: 10rpx;
 }
 
-.project-list {
+.equipment-list {
   background-color: white;
   border-radius: 10rpx;
   padding: 20rpx;
   box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
 }
 
-.project-item {
+.equipment-item {
   padding: 20rpx 0;
   border-bottom: 1rpx solid #e5e5e5;
   display: flex;
@@ -47,56 +46,55 @@
   justify-content: space-between;
 }
 
-.project-content {
+.equipment-item:last-child {
+  border-bottom: none;
+}
+
+.equipment-info {
   flex: 1;
   margin-right: 20rpx;
 }
 
-.arrow-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40rpx;
-  height: 40rpx;
-}
-
-.arrow {
-  font-size: 60rpx;
-  color: #999;
-  font-weight: 300;
-}
-
-.project-item:last-child {
-  border-bottom: none;
-}
-
-.project-header {
+.equipment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10rpx;
 }
 
-.project-name {
+.equipment-name {
   font-size: 32rpx;
   font-weight: bold;
   color: #333;
+  flex: 1;
+  margin-right: 20rpx;
 }
 
-.project-code {
+.status-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
   font-size: 24rpx;
-  color: #999;
+  color: white;
 }
 
-.project-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10rpx;
-}
-
-.info-item {
+.equipment-status {
   font-size: 26rpx;
   color: #666;
+}
+
+.arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 40rpx; */
+  height: 40rpx;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: #999;
+  font-weight: 400;
+  margin-left: 10rpx;
 }
 
 .loading {

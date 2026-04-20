@@ -1,12 +1,12 @@
 {
 	"pages": [
+		"projects/visit/pages/default/index/default_index",
 		"pages/login/login",
 		"pages/login/reset/reset",
 		"projects/visit/pages/project/list/project_list",
 		"projects/visit/pages/project/detail/project_detail",
-		"projects/visit/pages/default/index/default_index",
+		"projects/visit/pages/equipment/list/equipment_list",
 		"projects/visit/pages/news/index/news_index",
-		"projects/visit/pages/about/index/about_index",
 		"projects/visit/pages/search/search",
 		"projects/visit/pages/my/index/my_index",
 		"projects/visit/pages/my/reg/my_reg",
@@ -59,24 +59,19 @@
 		"list": [
 			{
 				"pagePath": "projects/visit/pages/default/index/default_index",
-				"text": "首页",
+        "text": "首页",
+        "iconPath": "/projects/visit/images/tabbar/home.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/home_cur.png"
 			},
 			{
-				"pagePath": "projects/visit/pages/news/index/news_index",
+				"pagePath": "projects/visit/pages/project/list/project_list",
 				"text": "项目查询",
 				"iconPath": "/projects/visit/images/tabbar/news.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/news_cur.png"
 			},
 			{
-				"pagePath": "projects/visit/pages/task/add/task_add",
-				"text": "我要申请",
-				"iconPath": "/projects/visit/images/tabbar/add.png",
-				"selectedIconPath": "/projects/visit/images/tabbar/add_cur.png"
-			},
-			{
 				"pagePath": "projects/visit/pages/task/my_list/task_my_list",
-				"text": "我的申请",
+				"text": "我的审批",
 				"iconPath": "/projects/visit/images/tabbar/task.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/task_cur.png"
 			},

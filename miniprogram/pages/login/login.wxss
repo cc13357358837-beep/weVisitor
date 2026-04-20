@@ -79,6 +79,8 @@
   border-radius: 10rpx;
   margin-top: 40rpx;
   margin-bottom: 30rpx;
+  width: 100%;
+  border-radius: 60rpx;
 }
 
 .forget-password {

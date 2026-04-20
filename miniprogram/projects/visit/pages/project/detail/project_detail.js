@@ -24,8 +24,6 @@ Page({
     }, {
       loadingText: '加载中'
     }).then(data => {
-      console.log(data,"data");
-      
       if (data.code === 200 && data.data) {
         this.setData({
           projectData: data.data,
@@ -43,5 +41,13 @@ Page({
         isLoading: false
       });
     });
+  },
+
+  goToEquipmentList() {
+    if (this.data.projectData && this.data.projectData.id) {
+      wx.navigateTo({
+        url: '/projects/visit/pages/equipment/list/equipment_list?projectId=' + this.data.projectData.id
+      });
+    }
   }
 });

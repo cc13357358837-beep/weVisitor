@@ -21,7 +21,7 @@
     </view>
   </view>
   
-  <view class="equipment-section" wx:if="{{projectData}}">
+  <view class="equipment-section" wx:if="{{projectData}}" bindtap="goToEquipmentList">
     <view class="section-header">
       <text class="section-title">具体设备</text>
       <text class="equipment-count">共{{projectData.deviceCount || 0}}台设备  <text class="arrow">></text></text>
