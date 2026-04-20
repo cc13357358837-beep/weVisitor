@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="equipment-header" wx:if="{{equipmentData}}">
+    <view class="equipment-title">
+      <text class="title-text">{{equipmentData.name}}</text>
+      <view class="status-badge">{{equipmentData.statusName || ''}}</view>
+    </view>
+  </view>
+  
+  <view class="equipment-info" wx:if="{{equipmentData}}">
+    <view style="font-weight: 600;">基本信息</view>
+    <view class="info-item">
+      <text class="label">型号</text>
+      <text class="value">{{equipmentData.serialNumber || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">牌照</text>
+      <text class="value">{{equipmentData.licensePlate || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">出厂编号</text>
+      <text class="value">{{equipmentData.factorySerialNumber || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">设备类型</text>
+      <text class="value">{{equipmentData.equipmentTypeName || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">标段</text>
+      <text class="value">{{equipmentData.sectionName || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">租赁单位</text>
+      <text class="value">{{equipmentData.rentalOrganizationName || '-'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">设备来源</text>
+      <text class="value">{{equipmentData.equipmentSourceName || '-'}}</text>
+    </view>
+  </view>
+  <view  class="equipment-info" wx:if="{{equipmentData}}">
+    <view style="font-weight: 600;">流程信息</view>
+    <view class="info-item">
+      <text class="label">审核人员</text>
+      <text class="value">{{equipmentData.constructionReviewerUserName || '-'}}</text>
+    </view>
+  </view>
+  
+  <view wx:if="{{isLoading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+  
+  <view wx:if="{{!isLoading && !equipmentData}}" class="empty">
+    <text>暂无设备数据</text>
+  </view>
+</view>

@@ -24,8 +24,8 @@
 }
 
 .logo-icon {
-  width: 100rpx;
-  height: 100rpx;
+  width: 60px;
+  height: 60px;
   background-color: white;
   border-radius: 20rpx;
   display: flex;
@@ -65,22 +65,22 @@
 }
 
 .input {
-  height: 80rpx;
+  height: 100rpx;
   font-size: 28rpx;
   color: #333;
 }
 
 .login-btn {
-  height: 80rpx;
+  height: 100rpx;
+  line-height: 100rpx;
   background-color: #0055BE;
   color: white;
   font-size: 32rpx;
   font-weight: bold;
-  border-radius: 10rpx;
+  border-radius: 60rpx;
   margin-top: 40rpx;
   margin-bottom: 30rpx;
   width: 100%;
-  border-radius: 60rpx;
 }
 
 .forget-password {

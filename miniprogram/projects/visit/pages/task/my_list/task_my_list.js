@@ -116,10 +116,9 @@ Page({
 
 		let sortMenus = [
 			{ label: '全部', type: 'status', value: '' },
-			{ label: '待审批', type: 'status', value: '0' },
-			{ label: '已审批待来访', type: 'status', value: '1' },
-			{ label: '审批未通过', type: 'status', value: '2' },
-			{ label: '已来访', type: 'status', value: '9' }
+			{ label: '入库申请', type: 'status', value: '0' },
+			{ label: '租借申请', type: 'status', value: '1' },
+			{ label: '安全交底', type: 'status', value: '2' },
 		];
 
 

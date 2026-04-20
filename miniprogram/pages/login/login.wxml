@@ -1,7 +1,7 @@
 <view class="container">
   <view class="header">
     <view class="logo">
-      <view class="logo-icon">X</view>
+      <view class="logo-icon"><image src="../../images/icon.png" style="width: 45px; height: 45px;"></image></view>
       <view class="logo-text">用户登录</view>
       <view class="logo-subtext">USER LOGIN</view>
     </view>
@@ -9,7 +9,7 @@
   
   <view class="form">
     <view class="form-item">
-      <input class="input" placeholder="请输入用户名/手机号" bindinput="onInput" data-key="username" />
+      <input class="input" placeholder="请输入用户名" bindinput="onInput" data-key="username" />
     </view>
     <view class="form-item">
       <input class="input" placeholder="请输入密码" bindinput="onInput" data-key="password" password />

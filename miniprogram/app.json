@@ -6,6 +6,7 @@
 		"projects/visit/pages/project/list/project_list",
 		"projects/visit/pages/project/detail/project_detail",
 		"projects/visit/pages/equipment/list/equipment_list",
+		"projects/visit/pages/equipment/detail/equipment_detail",
 		"projects/visit/pages/news/index/news_index",
 		"projects/visit/pages/search/search",
 		"projects/visit/pages/my/index/my_index",

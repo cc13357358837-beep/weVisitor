@@ -23,7 +23,7 @@
 	<view class="down padding-project">
 
 		<view class="repair card-project shadow-project">
-			<view class="title" bindtap="url" data-url="../../task/my_list/task_my_list">我的来访申请
+			<view class="title" bindtap="url" data-url="../../task/my_list/task_my_list">我的审批申请
 				<text bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list" class="right">全部<text class="icon-right" /></text>
 			</view>
 			<view class="item-list">
@@ -42,11 +42,6 @@
 					<image src="../../../images/my/task_2.png" />
 					<text>审批未过</text>
 				</view>
-				<view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list?status=9">
-					<view wx:if="{{task&&task.status9Cnt}}" class="num">{{task.status9Cnt}}</view>
-					<image src="../../../images/my/task_9.png" />
-					<text>已来访</text>
-				</view>
 			</view>
 		</view>
 
@@ -58,44 +53,6 @@
 					<text class="text-black">修改我的资料</text>
 				</view>
 			</view>
-
-			<view class="item arrow" bindtap="url" data-url="../fav/my_fav">
-				<view class="content">
-					<text class="icon-favor my-icon-project text-green"></text>
-					<text class="text-black">我的收藏</text>
-				</view>
-			</view>
-
-			<view class="item arrow" bindtap="url" data-url="../foot/my_foot">
-				<view class="content">
-					<text class="icon-footprint my-icon-project text-green"></text>
-					<text class="text-black">历史浏览</text>
-				</view>
-			</view>
-
-
-			<view wx:if="{{skin.IS_SUB}}" class="item arrow" bindtap="bindSetTap">
-				<view class="content">
-					<text class="icon-settings my-icon-project text-grey"></text>
-					<text class="text-red text-bold ">系统后台管理<text class="text-grey text-normal">（点击试用）</text></text>
-				</view>
-			</view>
- 
-
-			<view class="item arrow" bindtap="url" data-url="../../about/index/about_index?key=SETUP_CONTENT_ABOUT">
-				<view class="content">
-					<text class="icon-service my-icon-project text-purple"></text>
-					<text class="text-black">关于我们</text>
-				</view>
-			</view>
-
-			<view wx:if="{{skin.IS_SUB}}" class="item arrow" bindtap="url" data-url="/pages/home/about/home_about">
-				<view class="content">
-					<text class="icon-phone my-icon-project text-cyan"></text>
-					<text class="text-orange">联系作者了解更多详情</text>
-				</view>
-			</view>
-
 
 			<view wx:if="{{!skin.IS_SUB}}" class="item arrow" bindtap="bindSetTap">
 				<view class="content">

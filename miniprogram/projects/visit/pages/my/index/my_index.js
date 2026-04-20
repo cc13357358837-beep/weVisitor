@@ -118,7 +118,7 @@ Page({
 	},
 
 	bindSetTap: function (e, skin) {
-		let itemList = ['清除缓存', '后台管理'];
+		let itemList = ['退出登录'];
 		wx.showActionSheet({
 			itemList,
 			success: async res => {
