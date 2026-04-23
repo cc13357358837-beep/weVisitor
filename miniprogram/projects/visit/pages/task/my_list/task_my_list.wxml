@@ -1,15 +1,34 @@
 <block wx:if="{{isLogin&&isLoad}}">
-	<cmpt-comm-list pulldownType="{{['modal','modal']}}" type="my-task-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="task/my_list" isTotalMenu="{{true}}" sortMenusDefaultIndex="{{sortMenusDefaultIndex}}" topBottom="120" placeholder="搜索项目名称/标段" bind:list="bindCommListCmpt">
-
-		<view slot="searchEnd">
-
+	<!-- 原生 Tab 切换 -->
+	<view class="tab-container">
+		<view class="tab-item {{selectedTab === '' ? 'active' : ''}}" bindtap="switchTab" data-tab="">
+			<text>全部</text>
 		</view>
+		<view class="tab-item {{selectedTab === '0' ? 'active' : ''}}" bindtap="switchTab" data-tab="0">
+			<text>入库申请</text>
+		</view>
+		<view class="tab-item {{selectedTab === '1' ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+			<text>进场审核</text>
+		</view>
+		<view class="tab-item {{selectedTab === '2' ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+			<text>离场审核</text>
+		</view>
+		<view class="tab-item {{selectedTab === '3' ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
+			<text>安全交底</text>
+		</view>
+	</view>
 
-		<!-- List Begin -->
-		<view class="text-pic-list-box padding-project">
-			<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
-				<view class="status-right-top bg-orange">{{item.processName}}</view>
-				<view class="title"><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
+	<!-- 搜索栏 -->
+	<view class="search-bar">
+		<input class="search-input" placeholder="搜索项目名称/标段" bindinput="onSearchInput" />
+		<button class="search-btn" bindtap="search">搜索</button>
+	</view>
+
+	<!-- 列表 -->
+	<view class="text-pic-list-box padding-project">
+		<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
+			<view class="status-right-top bg-orange">{{item.processName}}</view>
+			<view class="title"><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
         <view class="author">
 					<view class="txt">项目名称：</view>
 					<view class="info">{{item.title}}</view>
@@ -36,20 +55,14 @@
 					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item._id}}" class="btn mid bg-gray text-black">详情/修改</button>
 				</view>
 
-			</view>
-
-			<!--load begin-->
-			<import src="../../../../../tpls/public/list_load_tpl.wxml" />
-			<template is="listLoadTpl" data="{{skin:'load-project',dataList}}" />
-			<!--load end-->
-
 		</view>
-		<!-- List END -->
 
-	</cmpt-comm-list>
+		<!--load begin-->
+		<import src="../../../../../tpls/public/list_load_tpl.wxml" />
+		<template is="listLoadTpl" data="{{skin:'load-project',dataList}}" />
+		<!--load end-->
 
-
- 
+	</view>
 
 	<block wx:if="{{skin.IS_SUB}}">
 		<import src="../../tpls/menu_tpl.wxml" />

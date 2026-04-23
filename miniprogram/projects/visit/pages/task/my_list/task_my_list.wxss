@@ -1,6 +1,62 @@
 @import "../../../../../style/public/article_list.wxss";
 @import "../../../style/skin.wxss";
 
+/* 原生 Tab 样式 */
+.tab-container {
+  display: flex;
+  background-color: white;
+  border-radius: 10rpx;
+  padding: 10rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 15rpx 0;
+  border-radius: 8rpx;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  background-color: #0055BE;
+  color: white;
+}
+
+.tab-item text {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+/* 搜索栏样式 */
+.search-bar {
+  display: flex;
+  margin-bottom: 20rpx;
+  background-color: white;
+  border-radius: 10rpx;
+  padding: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+  flex: 1;
+  height: 60rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.search-btn {
+  width: 120rpx;
+  height: 60rpx;
+  background-color: #0055BE;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 10rpx;
+  margin-left: 10rpx;
+}
+
 .text-pic-list-box .item {
 	padding: 10rpx 0rpx 20rpx;
 	position: relative;

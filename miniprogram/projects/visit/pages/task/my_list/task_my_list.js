@@ -21,7 +21,8 @@ Page({
 			pageNo: 1,
 			pageSize: 10
 		},
-		isLoading: false
+		isLoading: false,
+		selectedTab: '' // 当前选中的 tab 值
 	},
 
 	/**
@@ -48,11 +49,7 @@ Page({
 		}
 		else {
 			this.setData({
-				sortMenusDefaultIndex: 0,
-				_params: {
-					sortType: 'status',
-					sortVal: ''
-				}
+				sortMenusDefaultIndex: 0
 			});
 		}
 
@@ -108,33 +105,60 @@ Page({
 		pageHelper.url(e, this);
 	},
 
-	bindCommListCmpt: function (e) {
-		// 当选择不同的 tab 时，更新 _params 并重新加载数据
-		console.log('bindCommListCmpt called, e:', e);
-		if (e.detail && e.detail._params) {
-			this.setData({
-				_params: e.detail._params
-			});
-		}
+	// 处理 tab 切换事件
+	switchTab: function (e) {
+		const selectedTab = e.currentTarget.dataset.tab;
+		console.log('switchTab called, selectedTab:', selectedTab);
+		this.setData({
+			selectedTab: selectedTab,
+			dataList: {
+				list: [],
+				total: 0,
+				pageNo: 1,
+				pageSize: 10
+			}
+		});
+		this.loadData();
+	},
+
+	// 处理搜索输入
+	onSearchInput: function (e) {
+		this.setData({
+			search: e.detail.value
+		});
+	},
+
+	// 处理搜索按钮点击
+	search: function () {
+		this.setData({
+			dataList: {
+				list: [],
+				total: 0,
+				pageNo: 1,
+				pageSize: 10
+			}
+		});
 		this.loadData();
 	},
 
 	loadData: function () {
-		// 添加日志，查看 _params 和 status 的值
-		console.log('loadData called, _params:', this.data);
-		let status = this.data._params && this.data._params.sortVal ? this.data._params.sortVal : '';
-		console.log('loadData called, status:', status);
+		// 添加日志，查看 selectedTab 的值
+		console.log('loadData called, selectedTab:', this.data.selectedTab);
+		let selectedTab = this.data.selectedTab;
 		let url = '';
 
-		// 根据 status 选择不同的接口
-		switch (status) {
+		// 根据 selectedTab 选择不同的接口
+		switch (selectedTab) {
 			case '0':
 				url = 'approval/storage/list'; // 入库申请
 				break;
 			case '1':
-				url = 'approval/rental/list'; // 租借申请
+				url = 'approval/rental/list'; // 入场审核
 				break;
 			case '2':
+				url = 'approval/rental/list'; // 离场审核
+				break;
+			case '3':
 				url = 'approval/safety/list'; // 安全交底
 				break;
 			default:
@@ -180,9 +204,10 @@ Page({
     console.log(statusId,"statusId");
     switch (statusId) {
       case 1:
-        //
+        //不通过
         return 'red';
       default:
+        //通过
         return '#52c41a';
     }
   },
@@ -203,11 +228,11 @@ Page({
 		let sortItems = [];
 
 		let sortMenus = [
-			{ label: '全部', type: 'status', value: '' },
-      { label: '入库审核', type: 'status', value: '0' },
-      { label: '进场审核', type: 'status', value: '1' },
-			{ label: '离场审核', type: 'status', value: '2' },
-			{ label: '安全交底', type: 'status', value: '3' },
+			{ label: '全部', type: 'status', value: '0' },
+      { label: '入库审核', type: 'status', value: '1' },
+      { label: '进场审核', type: 'status', value: '2' },
+			{ label: '离场审核', type: 'status', value: '3' },
+			{ label: '安全交底', type: 'status', value: '4' },
 		];
 
 
