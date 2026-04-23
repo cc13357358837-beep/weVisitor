@@ -17,13 +17,23 @@
 
 			<view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list">
 				<view class="left">
-					<image mode="aspectFill" src="../../../images/home/list.png" />
+					<image mode="aspectFill" src="../../../images/home/news.png" />
 				</view> 
 				<view class="right">
 					<view class="title">我的审批</view>
 					<view class="desc">随时查看我的申请记录和审批进展</view>
 				</view>
-			</view>
+      </view>
+      
+      <view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list">
+				<view class="left">
+					<image mode="aspectFill" src="../../../images/home/list.png" />
+				</view> 
+				<view class="right">
+					<view class="title">设备查询</view>
+					<view class="desc">随时查看设备状态实时对设备进行评价</view>
+				</view>
+      </view>
 		</view>
 
 	</view>

@@ -9,10 +9,7 @@
 			<view class="detail">
 				<view class="name text-cut">{{user?user.USER_NAME:'欢迎回家~~~'}}</view>
 				<view class="desc">
-					<view wx:if="{{user&&user.USER_STATUS==9}}" class="tag small radius bg-purple light">已禁用</view>
-					<view wx:elif="{{user&&user.USER_STATUS==0}}" class="tag small radius bg-orange light">已注册，待审核</view>
-					<view wx:elif="{{user&&user.USER_STATUS==8}}" class="tag small radius bg-red light">审核未通过，请修改资料</view>
-					<view wx:else class="text-cut">{{user?'欢迎回来~~~':'马上注册，使用更多功能'}}</view>
+					<view class="text-cut"></view>
 				</view>
 			</view>
 		</view>

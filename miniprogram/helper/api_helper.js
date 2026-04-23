@@ -32,7 +32,6 @@ class ApiHelper {
     
     // 添加 Authorization 头
     const token = PassportBiz.getToken();
-    console.log(token, "token");
     
     if (token&&!isLoginUrl) {
       defaultHeaders['Authorization'] = `Bearer ${token}`;
@@ -42,9 +41,7 @@ class ApiHelper {
     const headers = {
       ...defaultHeaders,
       ...options.headers
-    };
-    console.log(headers,"headers");
-    
+    };    
 
     // 显示加载动画
     if (options.showLoading !== false) {
@@ -52,18 +49,12 @@ class ApiHelper {
         title: options.loadingText || '加载中',
       });
     }
-
-    // 返回 Promise
-    console.log('Request URL:', url);
-    console.log('Request Headers:', headers);
-    console.log('Request Data:', options.data || {});
     
     // 确保 headers 是对象
     if (!headers || typeof headers !== 'object') {
       headers = {
         'Content-Type': 'application/json',
       };
-      console.log('Headers corrected:', headers);
     }
     
     return new Promise((resolve, reject) => {
@@ -72,9 +63,7 @@ class ApiHelper {
         method: options.method || 'GET',
         header: headers, // 注意：wx.request 的参数名是 header，不是 headers
         data: options.data || {},
-        success: (res) => {
-          console.log(res,"resresres");
-          
+        success: (res) => {          
           // 隐藏加载动画
           if (options.showLoading !== false) {
             wx.hideLoading();

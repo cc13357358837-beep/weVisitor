@@ -46,7 +46,8 @@
 	font-size: 28rpx;
 	max-height: 120rpx;
 	display: flex;
-	align-items: center;
+  align-items: center;
+  color: #fff;
 }
 
 .text-pic-list-box .item image {

@@ -1,5 +1,5 @@
 <block wx:if="{{isLogin&&isLoad}}">
-	<cmpt-comm-list pulldownType="{{['modal','modal']}}" _params="{{_params}}" type="my-task-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="task/my_list" isTotalMenu="{{true}}" sortMenusDefaultIndex="{{sortMenusDefaultIndex}}" topBottom="120" placeholder="搜索审批项目" bind:list="bindCommListCmpt">
+	<cmpt-comm-list pulldownType="{{['modal','modal']}}" type="my-task-list" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}" route="task/my_list" isTotalMenu="{{true}}" sortMenusDefaultIndex="{{sortMenusDefaultIndex}}" topBottom="120" placeholder="搜索项目名称/标段" bind:list="bindCommListCmpt">
 
 		<view slot="searchEnd">
 
@@ -8,33 +8,32 @@
 		<!-- List Begin -->
 		<view class="text-pic-list-box padding-project">
 			<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
-				<view wx:if="{{item.TASK_STATUS==0}}" class="status-right-top bg-orange">入库申请</view>
-				<view wx:elif="{{item.TASK_STATUS==1}}" class="status-right-top bg-blue"><text class="icon-qrcode margin-right-xxs"></text>租借申请</view>
-				<view wx:elif="{{item.TASK_STATUS==2}}" class="status-right-top bg-red">安全交底</view>
-				<view wx:elif="{{item.TASK_STATUS==9}}" class="status-right-top bg-green"><text class="icon-qrcode margin-right-xxs"></text>已来访</view>
-
-				<view class="title"><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text wx:if="{{item.TASK_TYPE==1}}" class="tag small radius margin-left-xs bg-grey light">后台录入</text></view>
-
-				<view class="author">
-					<view class="txt">来访时间：</view>
-					<view class="info">{{item.TASK_OBJ.date}} {{item.TASK_OBJ.hour}}</view>
+				<view class="status-right-top bg-orange">{{item.processName}}</view>
+				<view class="title"><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
+        <view class="author">
+					<view class="txt">项目名称：</view>
+					<view class="info">{{item.title}}</view>
+        </view>
+        <view class="author">
+					<view class="txt">标段：</view>
+					<view class="info">{{item.sectionName}}</view>
 				</view>
 				<view class="author">
 					<view class="txt">申请人：</view>
-					<view class="info">{{item.TASK_OBJ.person}}</view>
+					<view class="info">{{item.applicantUserName}}</view>
 				</view> 
 				<view class="author">
-					<view class="txt">来访事由：</view>
+					<view class="txt">审批人：</view>
 					<view class="info">{{item.TASK_OBJ.desc}}</view>
-				</view> 
+        </view> 
+        <view class="author">
+					<view class="txt">审批时间：</view>
+					<view class="info">{{item.applyTime}}</view>
+				</view>
 
 				<view class="data data-button" wx:if="{{isEdit}}">
 					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item._id}}" class="btn mid bg-gray text-black">查看详情</button>
 					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item._id}}" class="btn mid bg-gray text-black">详情/修改</button>
- 
-
-					<button bindtap="bindDelTap" data-id="{{item._id}}" class="btn mid bg-grey light"><text class="icon-delete"></text>删除</button>
-
 				</view>
 
 			</view>
