@@ -1,11 +1,10 @@
 const pageHelper = require('../../../../../helper/page_helper.js');
-const cloudHelper = require('../../../../../helper/cloud_helper.js');
 const validate = require('../../../../../helper/validate.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
 const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
-const ApiHelper = require('../../../../../helper/api_helper.js');
+const userStore = require('../../../../../store/user_store.js');
 
 Page({
 	/**
@@ -14,6 +13,8 @@ Page({
 	data: {
 		isLoad: false,
 		isEdit: true,
+		fields: projectSetting.USER_FIELDS,
+		user: null,
 
 		userRegCheck: projectSetting.USER_REG_CHECK,
 		mobileCheck: setting.MOBILE_CHECK
@@ -24,33 +25,38 @@ Page({
 	 */
 	onLoad: async function (options) {
 		ProjectBiz.initPage(this);
+		this._unsubUserStore = userStore.subscribe(({ user }) => {
+			if (!user) return;
+			this._applyUser(user);
+		});
 		await this._loadDetail();
 	},
 
-	_loadDetail: async function (e) {
+	_applyUser: function (user) {
+		this.setData({
+			isLoad: true,
+			isEdit: true,
+			user,
+			fields: projectSetting.USER_FIELDS,
+			formName: user.realName || user.USER_NAME || '',
+			formMobile: user.phone || user.USER_MOBILE || '',
+			formPosition: user.position || '',
+			formForms: user.USER_FORMS || {}
+		});
+	},
+
+	_loadDetail: async function ({ force = false, silent = false } = {}) {
 		try {
-			// 调用新的个人信息接口
-			const res = await ApiHelper.post('/user/profile', {});
-			if (res.code === 0 && res.data) {
-				let user = res.data;
-				this.setData({
-					isLoad: true,
-					isEdit: true,
-
-					user,
-
-					fields: projectSetting.USER_FIELDS,
-
-					formName: user.realName || user.USER_NAME,
-					formMobile: user.phone || user.USER_MOBILE,
-					formPosition: user.position || '',
-					formForms: user.USER_FORMS || {}
-				});
+			const user = await userStore.loadProfile({ force, silent });
+			if (user) {
+				this._applyUser(user);
 			} else {
+				this.setData({ isLoad: null });
 				pageHelper.showErrorToast('获取个人信息失败');
 			}
 		} catch (err) {
 			console.error('获取个人信息失败:', err);
+			this.setData({ isLoad: null });
 			pageHelper.showErrorToast('获取个人信息失败');
 		}
 	},
@@ -80,14 +86,14 @@ Page({
 	 * 生命周期函数--监听页面卸载
 	 */
 	onUnload: function () {
-
+		if (this._unsubUserStore) this._unsubUserStore();
 	},
 
 	/**
 	 * 页面相关事件处理函数--监听用户下拉动作
 	 */
 	onPullDownRefresh: async function () {
-		await this._loadDetail();
+		await this._loadDetail({ force: true, silent: true });
 		wx.stopPullDownRefresh();
 	},
 
@@ -117,8 +123,8 @@ Page({
 				position: data.formPosition
 			};
 
-			const res = await ApiHelper.post('/user/realName/update', updateData);
-			if (res.code === 0) {
+			const res = await userStore.updateProfile(updateData);
+			if (res && (res.code === 0 || res.code === 200)) {
 				let callback = () => {
 					wx.reLaunch({ url: '../index/my_index' });
 				}

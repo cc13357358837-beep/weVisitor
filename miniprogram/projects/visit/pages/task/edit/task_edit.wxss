@@ -6,6 +6,10 @@ page {
 	--taskColorLight: #24a9eb;
 }
 
+.main{
+  background-color: white;
+}
+
 .appt {
 	width: 100%;
 	padding: 20rpx 5rpx;
@@ -17,7 +21,7 @@ page {
 .top {
 	width: 100%;
 	border-radius: 20rpx !important;
-} 
+}
 
 .top .task-info {
 	width: 100%;
@@ -185,4 +189,78 @@ page {
 	background-color: #fff;
 	color: #666;
 	border-bottom: 2rpx dashed #ccc;
+}
+
+/* 审核页面样式 */
+.form-item {
+	display: flex;
+	padding: 20rpx 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-item:last-child {
+	border-bottom: none;
+}
+
+.form-item .label {
+	width: 150rpx;
+	font-size: 28rpx;
+	color: #666;
+	display: flex;
+	align-items: center;
+}
+
+.form-item .value {
+	flex: 1;
+	font-size: 28rpx;
+	color: #333;
+	display: flex;
+	align-items: center;
+}
+
+.form-item .value.radio-group {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.form-item .value radio-group {
+	display: flex;
+	/* flex-direction: column; */
+}
+
+.radio-label {
+	display: flex;
+	align-items: center;
+	margin-right: 40rpx;
+	font-size: 28rpx;
+	color: #333;
+}
+
+.radio-label radio {
+	transform: scale(0.8);
+}
+
+.button-group {
+	display: flex;
+	margin-top: 40rpx;
+	margin-bottom: 100rpx;
+}
+
+.button-group .btn-base {
+  flex: 1;
+  border-radius: 60rpx;
+}
+
+.button-group .margin-right {
+	margin-right: 20rpx;
+}
+
+.picker {
+	width: 100%;
+	padding: 10rpx 0;
+}
+
+.btn-gray {
+	background-color: #f5f5f5;
+	color: #333;
 }

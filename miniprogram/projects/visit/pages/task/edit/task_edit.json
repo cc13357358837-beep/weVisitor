@@ -3,5 +3,5 @@
 		"cmpt-form-show": "/cmpts/public/form/form_show/form_show_cmpt"  
 	},
 	"enablePullDownRefresh": true,
-	"navigationBarTitleText": "申请单详情"
+	"navigationBarTitleText": "审批详情"
 }

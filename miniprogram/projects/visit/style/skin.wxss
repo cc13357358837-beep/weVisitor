@@ -1,5 +1,5 @@
 page {
-	background-color: #F5F5F5;
+	background-color: #fff;
 
 	--projectColor: #0055BE;
 	--projectColorLight: #106ad8;

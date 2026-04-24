@@ -7,6 +7,7 @@ const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 const dataHelper = require('../../../../../helper/data_helper.js');
 const projectSetting = require('../../../public/project_setting.js');
 const qrcodeLib = require('../../../../../lib/tools/qrcode_lib.js');
+const ApiHelper = require('../../../../../helper/api_helper.js');
 
 Page({
 	/**
@@ -15,6 +16,9 @@ Page({
 	data: {
 		isLoad: false,
 		isEdit: true,
+		// 审核相关数据
+		approvalResult: '', // 审核结果：1-通过，0-不通过
+		approvalReason: '', // 审核理由
 	},
 
 	/**
@@ -37,6 +41,10 @@ Page({
 	_loadDetail: async function (e) {
 		await TaskBiz.loadDetail(this);
 
+		// 判断是否为入库申请的审核页面
+		// 这里需要根据实际的任务类型字段来判断，假设任务类型为入库申请
+		// 实际应用中需要根据后端返回的任务类型来判断
+		
 		let qrImageData = qrcodeLib.drawImg('task=' + this.data.task._id, {
 			typeNumber: 1,
 			errorCorrectLevel: 'L',
@@ -45,7 +53,7 @@ Page({
 
 		this.setData({
 			qrImageData,
-			week: timeHelper.week(this.data.task.TASK_OBJ.date)
+			week: timeHelper.week(this.data.task.TASK_OBJ.date),
 		});
 
 	},
@@ -98,6 +106,71 @@ Page({
 
 	bindCheckTap: async function (e) {
 		this.selectComponent("#task-form-show").checkForms();
+	},
+
+	// 处理审核结果选择
+	bindApprovalResultChange: function (e) {
+		this.setData({
+			approvalResult: e.detail.value
+		});
+	},
+
+	// 处理审核理由输入
+	bindApprovalReasonInput: function (e) {
+		this.setData({
+			approvalReason: e.detail.value
+		});
+	},
+
+	// 提交审核
+	submitApproval: async function () {
+		const { approvalResult, approvalReason, task } = this.data;
+
+		if (!approvalResult) {
+			wx.showToast({
+				title: '请选择审核结果',
+				icon: 'none'
+			});
+			return;
+		}
+
+		if (!approvalReason) {
+			wx.showToast({
+				title: '请输入审核理由',
+				icon: 'none'
+			});
+			return;
+		}
+
+		// 调用审核接口
+		try {
+			const res = await ApiHelper.post('/approval/storage/audit', {
+				id: task._id,
+				approvalStatusId: approvalResult,
+				auditOpinion: approvalReason
+			});
+
+			if (res.code === 0) {
+				wx.showToast({
+					title: '审核成功',
+					icon: 'success'
+				});
+				setTimeout(() => {
+					wx.navigateBack();
+				}, 1500);
+			} else {
+				wx.showToast({
+					title: res.message || '审核失败',
+					icon: 'none'
+				});
+			}
+		} catch (err) {
+			console.error('审核失败:', err);
+			wx.showToast({
+				title: '审核失败，请稍后重试',
+				icon: 'none'
+			});
+		}
 	},
 
 	bindSubmitCmpt: async function (e) {

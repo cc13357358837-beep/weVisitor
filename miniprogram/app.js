@@ -1,4 +1,5 @@
 const setting = require('./setting/setting.js');
+const userStore = require('./store/user_store.js');
 
 App({
 	onLaunch: function (options) {
@@ -17,7 +18,9 @@ App({
 			})
 		}
 
-		this.globalData = {};
+		this.globalData = {
+			userStore
+		};
 
 		// 用于自定义导航栏
 		wx.getSystemInfo({

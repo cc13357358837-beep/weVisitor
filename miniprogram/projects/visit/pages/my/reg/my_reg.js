@@ -6,6 +6,7 @@ const ProjectBiz = require('../../../biz/project_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
 const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
+const userStore = require('../../../../../store/user_store.js');
 
 Page({
 	/**
@@ -36,6 +37,7 @@ Page({
 		}
 		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
 		if (user) {
+			userStore.setUser(user);
 			return wx.redirectTo({ url: '../index/my_index' });
 		}
 
@@ -46,6 +48,7 @@ Page({
 
 			formName: '',
 			formMobile: '',
+			formPosition: '',
 			formForms: []
 		});
 	},
@@ -118,6 +121,13 @@ Page({
 
 					// 用户需要审核，不能登录
 					if (!projectSetting.USER_REG_CHECK) PassportBiz.setToken(result.data.token);
+					userStore.setUser({
+						realName: data.formName,
+						phone: data.formMobile,
+						position: data.formPosition,
+						USER_FORMS: data.forms,
+						USER_STATUS: data.status
+					});
 
 					let callback = () => {
 						if (this.data.retUrl == 'back')
