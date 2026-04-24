@@ -75,7 +75,7 @@
 				"text": "我的审批",
 				"iconPath": "/projects/visit/images/tabbar/task.png",
 				"selectedIconPath": "/projects/visit/images/tabbar/task_cur.png"
-			},
+      },
 			{
 				"pagePath": "projects/visit/pages/my/index/my_index",
 				"text": "我的",

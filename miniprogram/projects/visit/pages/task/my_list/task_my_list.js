@@ -173,7 +173,7 @@ Page({
 		ApiHelper.post(url, {
 			pageNo: this.data.dataList.pageNo,
 			pageSize: this.data.dataList.pageSize,
-			keyword: this.data.search
+			proName: this.data.search
 		}).then(res => {
 			console.log('loadData response:', res);
 			if (res.code === 200 && res.data) {

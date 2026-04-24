@@ -10,6 +10,7 @@ const ProjectBiz = require('../../../biz/project_biz.js');
 const AdminBiz = require('../../../../../comm/biz/admin_biz.js');
 const setting = require('../../../../../setting/setting.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
+const ApiHelper = require('../../../../../helper/api_helper.js');
 
 Page({
 	data: {
@@ -18,14 +19,14 @@ Page({
 	/**
 	 * 生命周期函数--监听页面加载
 	 */
-	onLoad: async function (options) {
-		if (PassportBiz.isLogin()) {
-			let user = {};
-			user.USER_NAME = PassportBiz.getUserName();
-			this.setData({ user });
-		}
+	onLoad: async function (options) {		
+		// if (PassportBiz.isLogin()) {
+		// 	let user = {};
+		// 	user.USER_NAME = PassportBiz.getUserName();
+		// 	this.setData({ user });
+		// }
 
-		ProjectBiz.initPage(this);
+		// ProjectBiz.initPage(this);
 
 	},
 
@@ -38,12 +39,12 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: async function () {
-		await PassportBiz.loginSilenceMust(this);
 		this._loadUser();
+		// this._loadUser();
 
-		if (this.data.isLogin) {
-			this._loadMyTaskTypeCount();
-		}
+		// if (this.data.isLogin) {
+		// 	this._loadMyTaskTypeCount();
+		// }
 	},
 
 	/**
@@ -74,21 +75,24 @@ Page({
 	},
 
 	_loadUser: async function (e) {
-
-		let opts = {
-			title: 'bar'
+		try {
+			// 调用新的个人信息接口
+			const res = await ApiHelper.post('user/profile');
+			if (res.code === 0 && res.data) {
+				let user = res.data;
+				// 确保用户名称存在
+				if (user.realName) {
+					user.USER_NAME = user.realName;
+				}
+				this.setData({
+					user
+				});
+			} else {
+				console.error('获取用户信息失败:', res);
+			}
+		} catch (err) {
+			console.error('获取用户信息失败:', err);
 		}
-		let user = await cloudHelper.callCloudData('passport/my_detail', {}, opts);
-		if (!user) {
-			this.setData({
-				user: null
-			});
-			return;
-		}
-
-		this.setData({
-			user
-		})
 	},
 
 	/**
@@ -118,26 +122,15 @@ Page({
 	},
 
 	bindSetTap: function (e, skin) {
-		let itemList = ['退出登录'];
+		let itemList = ['修改密码','退出登录'];
 		wx.showActionSheet({
 			itemList,
 			success: async res => {
 				let idx = res.tapIndex;
-				if (idx == 0) {
+				if (idx == 1) {
 					cacheHelper.clear();
 					pageHelper.showNoneToast('清除缓存成功');
 				}
-
-				if (idx == 1) {
-					if (setting.IS_SUB) {
-						AdminBiz.adminLogin(this, 'admin', '123456');
-					} else {
-						wx.reLaunch({
-							url: '../../admin/index/login/admin_login',
-						});
-					}
-
-				} 
 
 			},
 			fail: function (res) { }

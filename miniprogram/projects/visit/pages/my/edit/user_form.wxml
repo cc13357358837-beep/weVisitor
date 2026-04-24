@@ -8,13 +8,13 @@
 	</view>
 	
 	<view class="form-group">
-		<view class="title must">昵称</view>
-		<input type="nickname" placeholder="填写您的昵称" placeholder-class="phc" model:value="{{formName}}" maxlength="30"></input>
+		<view class="title must">姓名</view>
+		<input type="nickname" placeholder="填写您的姓名" placeholder-class="phc" model:value="{{formName}}" maxlength="30"></input>
 	</view>
 	<view wx:if="{{formNameFocus}}" class="hint-desc error">{{formNameFocus}}</view>
 
 	<view class="form-group">
-		<view class="title must">手机</view>
+		<view class="title must">电话</view>
 		<input wx:if="{{!mobileCheck}}" placeholder="填写您的手机号码" placeholder-class="phc" model:value="{{formMobile}}" maxlength="11"></input>
 
 		<block wx:else>
@@ -23,6 +23,11 @@
 		</block>
 	</view>
 	<view wx:if="{{formMobileFocus}}" class="hint-desc error">{{formMobileFocus}}</view>
+
+	<view class="form-group">
+		<view class="title">职务</view>
+		<input placeholder="填写您的职务" placeholder-class="phc" model:value="{{formPosition}}" maxlength="50"></input>
+	</view>
 
 </view>
 

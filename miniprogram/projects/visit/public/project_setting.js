@@ -30,14 +30,14 @@ module.exports = { // 来访申请visit
 	TASK_NAME: '来访申请',
 	TASK_DEPT: TASK_DEPT,
 	TASK_FIELDS: [
-		{ mark: 'date', title: '申请来访日期', type: 'date', must: true },
-		{ mark: 'hour', title: '申请来访时间点', type: 'hourminute', def: '09:00', must: true },
-		{ mark: 'dept', title: '拜访部门', type: 'select', selectOptions: TASK_DEPT, must: true },
-		{ mark: 'person', title: '申请人', type: 'text', must: true },
-		{ mark: 'phone', title: '申请人电话', type: 'text', must: true },
-		{ mark: 'num', title: '来访人数', type: 'int', def: 1, must: true },
-		{ mark: 'desc', title: '来访事由', type: 'textarea', must: true },
-		{ mark: 'img', type: 'image', title: '相关图片', max: 8, must: false },
+		{ mark: 'Name', title: '设备名', type: 'text', must: true },
+    { mark: 'sectionId', title: '标段', type: 'select', selectOptions: TASK_DEPT, must: true },
+    { mark: 'model', title: '型号', type: 'text', must: true },
+    { mark: 'licensePlate', title: '牌照', type: 'text', must: true },
+		{ mark: 'factorySerialNumber', title: '出厂编号', type: 'text', must: true },
+    { mark: 'equipmentTypeId', title: '设备类型', type: 'select', must: true },
+    { mark: 'equipmentSourceId', title: '设备来源', type: 'select', must: true },
+		// { mark: 'img', type: 'image', title: '相关图片', max: 8, must: false },
 	],
 
 	TASK_OVER_FIELDS: [

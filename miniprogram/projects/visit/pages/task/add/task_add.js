@@ -5,6 +5,7 @@ const TaskBiz = require('../../../biz/task_biz.js');
 const PublicBiz = require('../../../../../comm/biz/public_biz.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 const projectSetting = require('../../../public/project_setting.js');
+const ApiHelper = require('../../../../../helper/api_helper.js');
 
 Page({
     /**
@@ -19,8 +20,46 @@ Page({
     onLoad: async function (options) {
         ProjectBiz.initPage(this);
 
+        // 初始化表单数据
+        let formData = TaskBiz.initFormData('');
+        
+        // 获取设备类型列表
+        const equipmentTypeRes = await ApiHelper.post('enum/equipmentType/list', {});
+        console.log(equipmentTypeRes,"equipmentTypeRes");
+        
+        const equipmentTypes = equipmentTypeRes.code === 200 && equipmentTypeRes.data ? equipmentTypeRes.data : [];
 
-        this.setData(TaskBiz.initFormData('')); // 初始化表单数据   
+        // 获取设备来源列表
+        const equipmentSourceRes = await ApiHelper.post('enum/equipmentSource/list', {});
+        const equipmentSources = equipmentSourceRes.code === 200 && equipmentSourceRes.data ? equipmentSourceRes.data : [];
+
+        // 处理数据格式，适配 selectOptions
+        // 保存原始数据，用于后续获取 id
+        this.setData({
+            equipmentTypes,
+            equipmentSources
+        });
+        
+        // 为 selectOptions 准备数据
+        const equipmentTypeOptions = equipmentTypes.map(item => item.name || item.value);
+        const equipmentSourceOptions = equipmentSources.map(item => item.name || item.value);
+        console.log(equipmentTypeOptions, equipmentSourceOptions, "equipmentSourceOptions");
+
+        // 为设备类型和设备来源字段添加 selectOptions
+        let fields = formData.fields;
+        if (fields) {
+            fields.forEach(field => {
+                if (field.mark === 'equipmentTypeId') {
+                    field.selectOptions = equipmentTypeOptions;
+                } else if (field.mark === 'equipmentSourceId') {
+                    field.selectOptions = equipmentSourceOptions;
+                }
+            });
+        }
+
+        // 更新表单数据
+        formData.fields = fields;
+        this.setData(formData);
 
     },
 
@@ -77,6 +116,26 @@ Page({
 
         let forms = e.detail;
 
+        // 处理设备类型和设备来源，将名称转换为 id
+        let equipmentTypes = this.data.equipmentTypes;
+        let equipmentSources = this.data.equipmentSources;
+        
+        forms.forEach(form => {
+            if (form.mark === 'equipmentTypeId' && form.val) {
+                // 根据名称查找对应的 id
+                let type = equipmentTypes.find(item => item.name === form.val);
+                if (type) {
+                    form.val = type.id;
+                }
+            } else if (form.mark === 'equipmentSourceId' && form.val) {
+                // 根据名称查找对应的 id
+                let source = equipmentSources.find(item => item.name === form.val);
+                if (source) {
+                    form.val = source.id;
+                }
+            }
+        });
+
         let callback = async () => {
             try {
                 let opts = {
@@ -85,23 +144,6 @@ Page({
                 let params = {
                     forms,
                 }
-                // 创建
-                let result = await cloudHelper.callCloudSumbit('task/insert', params, opts);
-                let taskId = result.data.id;
-
-                // 图片
-                let timeHelper = require('../../../../../helper/time_helper');
-                await cloudHelper.transFormsTempPics(forms, 'task-day/' + timeHelper.time('Y-M-D') + '/', taskId, 'task/task_update_forms');
-
-                let cb = () => {
-                    PublicBiz.removeCacheList('my-task-list');
-
-                    wx.reLaunch({
-                        url: '../my_list/task_my_list'
-                    });
-                }
-                pageHelper.showNoneToast('填报完成，请耐心等待审批', 2000, cb);
-
 
             } catch (err) {
                 console.log(err);
