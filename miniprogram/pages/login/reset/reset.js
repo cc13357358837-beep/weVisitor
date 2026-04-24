@@ -1,13 +1,11 @@
-const cloudHelper = require('../../../helper/cloud_helper.js');
+const ApiHelper = require('../../../helper/api_helper.js');
 
 Page({
   data: {
     step: 1,
-    mobile: '',
-    code: '',
-    password: '',
-    confirmPassword: '',
-    countdown: 0
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   },
 
   onLoad() {
@@ -24,129 +22,18 @@ Page({
     });
   },
 
-  getCode() {
-    const { mobile } = this.data;
-
-    if (!mobile) {
-      wx.showToast({
-        title: '请输入手机号',
-        icon: 'none'
-      });
-      return;
-    }
-
-    if (mobile.length !== 11) {
-      wx.showToast({
-        title: '请输入正确的手机号',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 调用云函数获取验证码
-    const params = {
-      mobile
-    };
-
-    const opt = {
-      title: '发送验证码中'
-    };
-
-    cloudHelper.callCloudSumbit('passport/sendCode', params, opt).then(result => {
-      if (result && result.data && result.data.success) {
-        wx.showToast({
-          title: '验证码已发送',
-          icon: 'success'
-        });
-        // 开始倒计时
-        this.startCountdown();
-      } else {
-        wx.showToast({
-          title: '验证码发送失败',
-          icon: 'none'
-        });
-      }
-    }).catch(err => {
-      console.log(err);
-      wx.showToast({
-        title: '验证码发送失败',
-        icon: 'none'
-      });
-    });
-  },
-
-  startCountdown() {
-    let countdown = 60;
-    this.setData({
-      countdown
-    });
-
-    const timer = setInterval(() => {
-      countdown--;
-      this.setData({
-        countdown
-      });
-
-      if (countdown <= 0) {
-        clearInterval(timer);
-      }
-    }, 1000);
-  },
-
-  nextStep() {
-    const { mobile, code } = this.data;
-
-    if (!mobile) {
-      wx.showToast({
-        title: '请输入手机号',
-        icon: 'none'
-      });
-      return;
-    }
-
-    if (!code) {
-      wx.showToast({
-        title: '请输入验证码',
-        icon: 'none'
-      });
-      return;
-    }
-
-    // 验证验证码
-    const params = {
-      mobile,
-      code
-    };
-
-    const opt = {
-      title: '验证中'
-    };
-
-    cloudHelper.callCloudSumbit('passport/verifyCode', params, opt).then(result => {
-      if (result && result.data && result.data.success) {
-        // 验证成功，进入下一步
-        this.setData({
-          step: 2
-        });
-      } else {
-        wx.showToast({
-          title: '验证码错误',
-          icon: 'none'
-        });
-      }
-    }).catch(err => {
-      console.log(err);
-      wx.showToast({
-        title: '验证失败，请稍后重试',
-        icon: 'none'
-      });
-    });
-  },
-
   confirmReset() {
-    const { mobile, password, confirmPassword } = this.data;
+    const { oldPassword, newPassword, confirmPassword } = this.data;
 
-    if (!password) {
+    if (!oldPassword) {
+      wx.showToast({
+        title: '请输入旧密码',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (!newPassword) {
       wx.showToast({
         title: '请设置新密码',
         icon: 'none'
@@ -154,7 +41,7 @@ Page({
       return;
     }
 
-    if (password.length < 6 || password.length > 20) {
+    if (newPassword.length < 6 || newPassword.length > 20) {
       wx.showToast({
         title: '密码长度应在6-20位之间',
         icon: 'none'
@@ -162,7 +49,7 @@ Page({
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       wx.showToast({
         title: '两次输入的密码不一致',
         icon: 'none'
@@ -170,40 +57,34 @@ Page({
       return;
     }
 
-    // 重置密码
+    // 调用修改密码接口
     const params = {
-      mobile,
-      password
+      oldPassword,
+      newPassword
     };
 
-    const opt = {
-      title: '重置密码中'
-    };
-
-    cloudHelper.callCloudSumbit('passport/resetPassword', params, opt).then(result => {
-      if (result && result.data && result.data.success) {
-        // 重置成功，进入下一步
+    ApiHelper.post('auth/password/reset', params).then(result => {
+      if (result.code === 0) {
+        // 修改成功，进入下一步
         this.setData({
-          step: 3
+          step: 2
         });
       } else {
         wx.showToast({
-          title: '密码重置失败',
+          title: result.message || '密码修改失败',
           icon: 'none'
         });
       }
     }).catch(err => {
       console.log(err);
       wx.showToast({
-        title: '密码重置失败，请稍后重试',
+        title: '密码修改失败，请稍后重试',
         icon: 'none'
       });
     });
   },
 
-  goToLogin() {
-    wx.navigateTo({
-      url: '/pages/login/login'
-    });
+  goBack() {
+    wx.navigateBack();
   }
 });

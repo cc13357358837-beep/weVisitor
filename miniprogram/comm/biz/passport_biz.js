@@ -210,6 +210,11 @@ class PassportBiz extends BaseBiz {
 		cacheHelper.remove(constants.CACHE_TOKEN);
 	}
 
+	// 退出登录
+	static logout() {
+		PassportBiz.clearToken();
+	}
+
 	// 手机号码
 	static async getPhone(e, that) {
 		if (e.detail.errMsg == "getPhoneNumber:ok") {

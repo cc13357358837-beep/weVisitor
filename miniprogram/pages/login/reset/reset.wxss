@@ -113,12 +113,14 @@
 }
 
 .next-btn, .login-btn {
-  height: 80rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  border-radius: 60rpx;
   background-color: #0055BE;
   color: white;
   font-size: 32rpx;
   font-weight: bold;
-  border-radius: 10rpx;
   margin-top: 40rpx;
 }
 

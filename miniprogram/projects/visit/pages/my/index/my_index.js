@@ -127,9 +127,18 @@ Page({
 			itemList,
 			success: async res => {
 				let idx = res.tapIndex;
-				if (idx == 1) {
-					cacheHelper.clear();
-					pageHelper.showNoneToast('清除缓存成功');
+				if (idx == 0) {
+					// 跳转到修改密码页面
+					wx.navigateTo({
+						url: '/pages/login/reset/reset'
+					});
+				} else if (idx == 1) {
+					// 退出登录
+					PassportBiz.logout();
+					pageHelper.showNoneToast('退出登录成功');
+					wx.reLaunch({
+						url: '/pages/login/login'
+					});
 				}
 
 			},
