@@ -33,6 +33,10 @@
 					<view class="txt">项目名称：</view>
 					<view class="info">{{item.title}}</view>
         </view>
+		  <view class="author">
+					<view class="txt">设备名称：</view>
+					<view class="info">{{item.equipmentName}}</view>
+        </view>
         <view class="author">
 					<view class="txt">标段：</view>
 					<view class="info">{{item.sectionName}}</view>
@@ -41,10 +45,6 @@
 					<view class="txt">申请人：</view>
 					<view class="info">{{item.applicantUserName}}</view>
 				</view> 
-				<view class="author">
-					<view class="txt">审批人：</view>
-					<view class="info">{{item.TASK_OBJ.desc}}</view>
-        </view> 
         <view class="author">
 					<view class="txt">审批时间：</view>
 					<view class="info">{{item.applyTime}}</view>
