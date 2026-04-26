@@ -78,12 +78,9 @@ Page({
 		try {
 			// 调用新的个人信息接口
 			const res = await ApiHelper.post('user/profile');
-			if (res.code === 0 && res.data) {
+			if (res.code === 200 && res.data) {
 				let user = res.data;
-				// 确保用户名称存在
-				if (user.realName) {
-					user.USER_NAME = user.realName;
-				}
+
 				this.setData({
 					user
 				});

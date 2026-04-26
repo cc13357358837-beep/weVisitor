@@ -206,7 +206,7 @@ const userStore = {
 	},
 
 	async updateProfile(payload, options = {}) {
-		const res = await ApiHelper.post('/user/realName/update', payload, {
+		const res = await ApiHelper.post('user/realName/update', payload, {
 			loadingText: '保存中',
 			...(options || {})
 		});

@@ -7,9 +7,9 @@
 				<image mode="aspectFit" src="../../../images/tabbar/my_cur.png" />
 			</view>
 			<view class="detail">
-				<view class="name text-cut">{{user?user.USER_NAME:'欢迎回家~~~'}}</view>
+				<view class="name text-cut">{{user?user.fullName:'-'}}</view>
 				<view class="desc">
-					<view class="text-cut"></view>
+					<view class="text-cut">单位：{{user.organizationName}}</view>
 				</view>
 			</view>
 		</view>

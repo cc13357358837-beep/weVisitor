@@ -38,10 +38,9 @@ Page({
 			isEdit: true,
 			user,
 			fields: projectSetting.USER_FIELDS,
-			formName: user.realName || user.USER_NAME || '',
+			formName: user.fullName || user.USER_NAME || '',
 			formMobile: user.phone || user.USER_MOBILE || '',
 			formPosition: user.position || '',
-			formForms: user.USER_FORMS || {}
 		});
 	},
 
@@ -114,16 +113,13 @@ Page({
 			let data = this.data;
 			// 数据校验 
 			data = validate.check(data, PassportBiz.CHECK_FORM, this);
+			console.log(data,"data");
+			
 			if (!data) return;
 
 			// 调用新的修改个人信息接口
-			const updateData = {
-				realName: data.formName,
-				phone: data.formMobile,
-				position: data.formPosition
-			};
 
-			const res = await userStore.updateProfile(updateData);
+			const res = await userStore.updateProfile(data);
 			if (res && (res.code === 0 || res.code === 200)) {
 				let callback = () => {
 					wx.reLaunch({ url: '../index/my_index' });
