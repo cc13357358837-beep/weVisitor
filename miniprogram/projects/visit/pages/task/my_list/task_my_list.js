@@ -153,10 +153,10 @@ Page({
 				url = 'approval/storage/list'; // 入库申请
 				break;
 			case '1':
-				url = 'approval/rental/list'; // 入场审核
+				url = 'approval/entry/list'; // 入场审核
 				break;
 			case '2':
-				url = 'approval/rental/list'; // 离场审核
+				url = 'approval/exit/list'; // 离场审核
 				break;
 			case '3':
 				url = 'approval/safety/list'; // 安全交底
@@ -182,6 +182,7 @@ Page({
 						list: res.data.records.map(n=>{
               return {
                 ...n,
+								detailId: n.id || n.ID || n._id || '',
                 approvalStatusBg:this.getStatusColor(n.approvalStatusId)
               }
             }) || [],

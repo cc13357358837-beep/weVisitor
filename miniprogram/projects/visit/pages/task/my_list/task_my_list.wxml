@@ -10,10 +10,10 @@
 		<view class="tab-item {{selectedTab === '1' ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
 			<text>进场审核</text>
 		</view>
-		<view class="tab-item {{selectedTab === '2' ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+		<view class="tab-item {{selectedTab === '2' ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
 			<text>离场审核</text>
 		</view>
-		<view class="tab-item {{selectedTab === '3' ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
+		<view class="tab-item {{selectedTab === '3' ? 'active' : ''}}" bindtap="switchTab" data-tab="3">
 			<text>安全交底</text>
 		</view>
 	</view>
@@ -28,7 +28,8 @@
 	<view class="text-pic-list-box padding-project">
 		<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
 			<view class="status-right-top bg-orange">{{item.processName}}</view>
-			<view class="title"><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
+
+			<view class="title" ><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text  wx:if="{{item.approvalStatusName}}" class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
         <view class="author">
 					<view class="txt">项目名称：</view>
 					<view class="info">{{item.title}}</view>
@@ -51,8 +52,8 @@
 				</view>
 
 				<view class="data data-button" wx:if="{{isEdit}}">
-					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item._id}}" class="btn mid bg-gray text-black">查看详情</button>
-					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item._id}}" class="btn mid bg-gray text-black">详情/修改</button>
+					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">查看详情</button>
+					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">详情/修改</button>
 				</view>
 
 		</view>
