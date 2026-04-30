@@ -33,19 +33,25 @@ Page({
         const equipmentSourceRes = await ApiHelper.post('enum/equipmentSource/list', {});
         const equipmentSources = equipmentSourceRes.code === 200 && equipmentSourceRes.data ? equipmentSourceRes.data : [];
 
+        // 获取标段列表
+        const sectionRes = await ApiHelper.post('section/list', { projectId: 0 });
+        const sections = sectionRes.code === 200 && sectionRes.data ? sectionRes.data : [];
+
         // 处理数据格式，适配 selectOptions
         // 保存原始数据，用于后续获取 id
         this.setData({
             equipmentTypes,
-            equipmentSources
+            equipmentSources,
+            sections
         });
         
         // 为 selectOptions 准备数据
         const equipmentTypeOptions = equipmentTypes.map(item => item.name || item.value);
         const equipmentSourceOptions = equipmentSources.map(item => item.name || item.value);
-        console.log(equipmentTypeOptions, equipmentSourceOptions, "equipmentSourceOptions");
+        const sectionOptions = sections.map(item => item.name || item.sectionName || item.value);
+        console.log(equipmentTypeOptions, equipmentSourceOptions, sectionOptions, "options");
 
-        // 为设备类型和设备来源字段添加 selectOptions
+        // 为设备类型、设备来源和标段字段添加 selectOptions
         let fields = formData.fields;
         if (fields) {
             fields.forEach(field => {
@@ -53,6 +59,8 @@ Page({
                     field.selectOptions = equipmentTypeOptions;
                 } else if (field.mark === 'equipmentSourceId') {
                     field.selectOptions = equipmentSourceOptions;
+                } else if (field.mark === 'sectionId') {
+                    field.selectOptions = sectionOptions;
                 }
             });
         }
@@ -62,6 +70,7 @@ Page({
         this.setData(formData);
 
     },
+
 
 
 
@@ -99,9 +108,11 @@ Page({
 
 
 
+
     url: function (e) {
         pageHelper.url(e, this);
     },
+
 
 
 
@@ -119,35 +130,79 @@ Page({
         // 处理设备类型和设备来源，将名称转换为 id
         let equipmentTypes = this.data.equipmentTypes;
         let equipmentSources = this.data.equipmentSources;
+        let sections = this.data.sections;
         
+        // 将表单数组转换为对象，方便获取字段值
+        let formObj = {};
         forms.forEach(form => {
+            // 根据名称查找对应的 id
             if (form.mark === 'equipmentTypeId' && form.val) {
-                // 根据名称查找对应的 id
                 let type = equipmentTypes.find(item => item.name === form.val);
                 if (type) {
                     form.val = type.id;
                 }
             } else if (form.mark === 'equipmentSourceId' && form.val) {
-                // 根据名称查找对应的 id
                 let source = equipmentSources.find(item => item.name === form.val);
                 if (source) {
                     form.val = source.id;
                 }
+            } else if (form.mark === 'sectionId' && form.val) {
+                let section = sections.find(item => item.name === form.val || item.sectionName === form.val);
+                if (section) {
+                    form.val = section.id;
+                }
             }
+            formObj[form.mark] = form.val;
         });
+
+        // 构建提交参数
+        let params = {
+            name: formObj.name || '',
+            serialNumber: formObj.serialNumber || '',
+            sectionId: Number(formObj.sectionId) || 0,
+            model: formObj.model || '',
+            licensePlate: formObj.licensePlate || '',
+            factorySerialNumber: formObj.factorySerialNumber || '',
+            equipmentTypeId: Number(formObj.equipmentTypeId) || 0,
+            equipmentSourceId: Number(formObj.equipmentSourceId) || 0,
+            statusId: Number(formObj.statusId) || 0,
+            constructionReviewerUserId: Number(formObj.constructionReviewerUserId) || 0,
+            inspectionReport: formObj.inspectionReport ? JSON.parse(formObj.inspectionReport) : [],
+            insuranceCertificate: formObj.insuranceCertificate ? JSON.parse(formObj.insuranceCertificate) : [],
+            rentalCompanyQualification: formObj.rentalCompanyQualification ? JSON.parse(formObj.rentalCompanyQualification) : []
+        };
+
+        console.log('提交参数:', params);
 
         let callback = async () => {
             try {
                 let opts = {
                     title: '提交中'
                 }
-                let params = {
-                    forms,
+                
+                const res = await ApiHelper.post('approval/storage/submit', params, opts);
+                
+                if (res.code === 200) {
+                    wx.showToast({
+                        title: '提交成功',
+                        icon: 'success'
+                    });
+                    setTimeout(() => {
+                        wx.navigateBack();
+                    }, 1500);
+                } else {
+                    wx.showToast({
+                        title: res.message || '提交失败',
+                        icon: 'none'
+                    });
                 }
-
             } catch (err) {
                 console.log(err);
-            };
+                wx.showToast({
+                    title: '提交失败',
+                    icon: 'none'
+                });
+            }
         }
 
 

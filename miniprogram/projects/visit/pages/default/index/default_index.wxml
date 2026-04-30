@@ -25,7 +25,7 @@
 				</view>
       </view>
       
-      <view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list">
+      <view class="item" bindtap="url" data-type="relaunch" data-url="/projects/visit/pages/equipment/list/equipment_list">
 				<view class="left">
 					<image mode="aspectFill" src="../../../images/home/list.png" />
 				</view> 

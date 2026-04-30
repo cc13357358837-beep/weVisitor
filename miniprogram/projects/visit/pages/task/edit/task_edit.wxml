@@ -29,19 +29,34 @@
 				</view>
 			</view>
 
-			<view class="card-project shadow-project margin-bottom">
+			<!-- 已审核状态显示 -->
+			<view class="card-project shadow-project margin-bottom" wx:if="{{task.approvalStatusId !== null && task.approvalStatusId !== undefined}}">
 				<view class="form-item">
+					<view class="label">审批状态</view>
+					<view class="value" style="color: {{task.approvalStatusId === 1 ? '#52c41a' : '#ff4d4f'}}">{{task.approvalStatusName || '暂无'}}</view>
+				</view>
+				<view class="form-item" wx:if="{{task.comment}}">
 					<view class="label">审核理由</view>
-					<view class="value">
-						<textarea placeholder="请输入审核理由（驳回时必填）" value="{{approvalReason}}" bindinput="bindApprovalReasonInput" style="width: 100%; height: 150rpx; border: 1rpx solid #e8e8e8; border-radius: 8rpx; padding: 16rpx;"></textarea>
-					</view>
+					<view class="value">{{task.comment}}</view>
 				</view>
 			</view>
 
-			<view class="button-group" style="display: flex; gap: 20rpx;">
-				<button bindtap="reject" class="btn-base btn-project shadow" style="flex: 1; background-color: #ff4d4f;">驳回</button>
-				<button bindtap="approve" class="btn-base btn-project shadow" style="flex: 1; background-color: #52c41a;">同意</button>
-			</view>
+			<!-- 待审核时显示审核按钮 -->
+			<block wx:if="{{task.approvalStatusId === null || task.approvalStatusId === undefined}}">
+				<view class="card-project shadow-project margin-bottom">
+					<view class="form-item">
+						<view class="label">审核理由</view>
+						<view class="value">
+							<textarea placeholder="请输入审核理由（驳回时必填）" value="{{approvalReason}}" bindinput="bindApprovalReasonInput" style="width: 100%; height: 150rpx; border: 1rpx solid #e8e8e8; border-radius: 8rpx; padding: 16rpx;"></textarea>
+						</view>
+					</view>
+				</view>
+
+				<view class="button-group" style="display: flex; gap: 20rpx;">
+					<button bindtap="reject" class="btn-base btn-project shadow" style="flex: 1; background-color: #ff4d4f;">驳回</button>
+					<button bindtap="approve" class="btn-base btn-project shadow" style="flex: 1; background-color: #52c41a;">同意</button>
+				</view>
+			</block>
 		</view>
 	</view>
 </block>

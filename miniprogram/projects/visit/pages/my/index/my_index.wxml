@@ -20,7 +20,7 @@
 	<view class="down padding-project">
 
 		<view class="repair card-project shadow-project">
-			<view class="title" bindtap="url" data-url="../../task/my_list/task_my_list">我的审批申请
+			<view class="title" bindtap="url" data-url="../../task/my_list/task_my_list">我的审批
 				<text bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list" class="right">全部<text class="icon-right" /></text>
 			</view>
 			<view class="item-list">

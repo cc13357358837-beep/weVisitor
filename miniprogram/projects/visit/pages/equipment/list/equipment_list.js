@@ -8,17 +8,17 @@ Page({
     pageNo: 1,
     pageSize: 10,
     keyword: '',
-    projectId: ''
+    projectId: 0
   },
 
   onLoad(options) {
     ProjectBiz.initPage(this);
     if (options.projectId) {
       this.setData({
-        projectId: options.projectId
+        projectId: Number(options.projectId)
       });
-      this.getEquipmentList();
     }
+    this.getEquipmentList();
   },
 
   onReachBottom() {
@@ -53,22 +53,22 @@ Page({
       pageNo: this.data.pageNo,
       pageSize: this.data.pageSize,
       keyword: this.data.keyword,
-      projectId: Number(this.data.projectId)
+      projectId: this.data.projectId
     }, {
       loadingText: '加载中'
     }).then(data => {
       if (data.code === 200 && data.data && data.data.records) {
-        const list =data.data.records.map(n=>{
+        const list = data.data.records.map(n => {
           return {
             ...n,
-            statusBg:this.getStatusColor(n.statusId)
+            statusBg: this.getStatusColor(n.statusId)
           }
         })
         this.setData({
           equipmentList: this.data.pageNo === 1 ? list : [...this.data.equipmentList, ...list],
           isLoading: false
         });
-        console.log(this.data.equipmentList,"equipmentList");
+        console.log(this.data.equipmentList, "equipmentList");
       } else {
         this.setData({
           isLoading: false
@@ -83,7 +83,7 @@ Page({
   },
 
   getStatusColor(statusId) {
-    console.log(statusId,"statusId");
+    console.log(statusId, "statusId");
     switch (statusId) {
       case 1:
         //可用
@@ -99,7 +99,7 @@ Page({
         return '#1890ff';
       case 9:
         //未审核通过
-        return '#1890ff';
+        return '#ff4d4f';
       default:
         return '#52c41a';
     }
