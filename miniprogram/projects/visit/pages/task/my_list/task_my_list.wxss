@@ -1,6 +1,12 @@
 @import "../../../../../style/public/article_list.wxss";
 @import "../../../style/skin.wxss";
 
+/* 页面容器 */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
 /* 原生 Tab 样式 */
 .tab-container {
   display: flex;
@@ -56,6 +62,12 @@
   font-size: 28rpx;
   border-radius: 10rpx;
   margin-left: 10rpx;
+}
+
+/* 滚动区域 */
+.list-scroll {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .text-pic-list-box .item {

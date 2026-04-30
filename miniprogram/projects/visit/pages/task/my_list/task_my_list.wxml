@@ -1,3 +1,4 @@
+<view class="container {{skin.IS_SUB?'sub-margin-bottom':''}}">
 <block wx:if="{{isLogin&&isLoad}}">
 	<!-- 原生 Tab 切换 -->
 	<view class="tab-container">
@@ -25,14 +26,15 @@
 	</view>
 
 	<!-- 列表 -->
-	<view class="text-pic-list-box padding-project">
-		<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
-			<view class="status-right-top bg-orange">{{item.processName}}</view>
+	<scroll-view scroll-y style="height: calc(100vh - 280rpx);" class="list-scroll">
+		<view class="text-pic-list-box padding-project">
+			<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
+				<view class="status-right-top bg-orange" wx:if="{{selectedTab === ''}}">{{item.processName}}</view>
 
-			<view class="title" ><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text  wx:if="{{item.approvalStatusName}}" class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
+				<view class="title" ><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text  wx:if="{{item.approvalStatusName}}" class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
         <view class="author">
 					<view class="txt">项目名称：</view>
-					<view class="info">{{item.title}}</view>
+					<view class="info">{{item.projectName}}</view>
         </view>
 		  <view class="author">
 					<view class="txt">设备名称：</view>
@@ -52,22 +54,22 @@
 				</view>
 
 				<view class="data data-button" wx:if="{{isEdit}}">
-					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">查看详情</button>
+					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?id={{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
 					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">详情/修改</button>
 				</view>
 
+			</view>
+
+			<!--load begin-->
+			<import src="../../../../../tpls/public/list_load_tpl.wxml" />
+			<template is="listLoadTpl" data="{{skin:'load-project',dataList}}" />
+			<!--load end-->
 		</view>
-
-		<!--load begin-->
-		<import src="../../../../../tpls/public/list_load_tpl.wxml" />
-		<template is="listLoadTpl" data="{{skin:'load-project',dataList}}" />
-		<!--load end-->
-
-	</view>
+	</scroll-view>
 
 	<block wx:if="{{skin.IS_SUB}}">
 		<import src="../../tpls/menu_tpl.wxml" />
 		<template is="menuTpl" data="{{curMenu:'my_task',returnHome:false}}" />
 	</block>
-
 </block>
+</view>

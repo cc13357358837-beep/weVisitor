@@ -1,12 +1,6 @@
-const cloudHelper = require('../../../../../helper/cloud_helper.js');
 const pageHelper = require('../../../../../helper/page_helper.js');
-const timeHelper = require('../../../../../helper/time_helper.js');
 const ProjectBiz = require('../../../biz/project_biz.js');
-const TaskBiz = require('../../../biz/task_biz.js');
 const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
-const dataHelper = require('../../../../../helper/data_helper.js');
-const projectSetting = require('../../../public/project_setting.js');
-const qrcodeLib = require('../../../../../lib/tools/qrcode_lib.js');
 const ApiHelper = require('../../../../../helper/api_helper.js');
 
 Page({
@@ -16,9 +10,10 @@ Page({
 	data: {
 		isLoad: false,
 		isEdit: true,
-		// 审核相关数据
-		approvalResult: '', // 审核结果：1-通过，0-不通过
-		approvalReason: '', // 审核理由
+		id: '',
+		task: null,
+		approvalResult: '', // 1=通过, 0=不通过
+		approvalReason: '' // 审核理由
 	},
 
 	/**
@@ -31,33 +26,31 @@ Page({
 
 		if (!await PassportBiz.loginMustBackWin(this)) return;
 
-
-		this.setData(TaskBiz.initFormData(this.data.id)); // 初始化表单数据 
-
-		this._loadDetail(this);
-
+		this._loadDetail();
 	},
 
-	_loadDetail: async function (e) {
-		await TaskBiz.loadDetail(this);
+	_loadDetail: async function () {
+		try {
+			const id = this.data.id;
+			const res = await ApiHelper.post('approval/storage/detail', {
+				id: Number(id)
+			});
 
-		// 判断是否为入库申请的审核页面
-		// 这里需要根据实际的任务类型字段来判断，假设任务类型为入库申请
-		// 实际应用中需要根据后端返回的任务类型来判断
-		
-		let qrImageData = qrcodeLib.drawImg('task=' + this.data.task._id, {
-			typeNumber: 1,
-			errorCorrectLevel: 'L',
-			size: 450
-		});
-
-		this.setData({
-			qrImageData,
-			week: timeHelper.week(this.data.task.TASK_OBJ.date),
-		});
-
+			if (res.code === 200 && res.data) {
+				this.setData({
+					isLoad: true,
+					task: res.data
+				});
+			} else {
+				this.setData({ isLoad: null });
+				pageHelper.showErrorToast(res.message || '获取详情失败');
+			}
+		} catch (err) {
+			console.error('获取详情失败:', err);
+			this.setData({ isLoad: null });
+			pageHelper.showErrorToast('获取详情失败');
+		}
 	},
-
 
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
@@ -92,20 +85,14 @@ Page({
 		this.setData({
 			isLoad: false
 		}, async () => {
-			await this._loadDetail(this);
+			await this._loadDetail();
 		});
 		wx.stopPullDownRefresh();
 	},
 
 
-
 	url: function (e) {
 		pageHelper.url(e, this);
-	},
-
-
-	bindCheckTap: async function (e) {
-		this.selectComponent("#task-form-show").checkForms();
 	},
 
 	// 处理审核结果选择
@@ -123,31 +110,22 @@ Page({
 	},
 
 	// 提交审核
-	submitApproval: async function () {
-		const { approvalResult, approvalReason, task } = this.data;
+	submitApproval: async function (status) {
+		const { approvalReason, task } = this.data;
 
-		if (!approvalResult) {
+		if (!approvalReason && status === 0) {
 			wx.showToast({
-				title: '请选择审核结果',
+				title: '驳回时请输入理由',
 				icon: 'none'
 			});
 			return;
 		}
 
-		if (!approvalReason) {
-			wx.showToast({
-				title: '请输入审核理由',
-				icon: 'none'
-			});
-			return;
-		}
-
-		// 调用审核接口
 		try {
-			const res = await ApiHelper.post('/approval/storage/audit', {
-				id: task._id,
-				approvalStatusId: approvalResult,
-				auditOpinion: approvalReason
+			const res = await ApiHelper.post('/approval/storage/action', {
+				id: task.id,
+				status: status,
+				comment: approvalReason || ''
 			});
 
 			if (res.code === 0) {
@@ -173,45 +151,13 @@ Page({
 		}
 	},
 
-	bindSubmitCmpt: async function (e) {
-		let forms = e.detail;
-		let callback = async () => {
-			try {
-				let id = this.data.id;
-				let params = {
-					id,
-					forms
-				}
-				await cloudHelper.callCloudSumbit('task/edit', params);
-
-				let timeHelper = require('../../../../../helper/time_helper');
-				await cloudHelper.transFormsTempPics(forms, 'task-day/' + timeHelper.time('Y-M-D') + '/', id, 'task/task_update_forms');
-
-				let cb = () => {
-					let node = {
-						'TASK_OBJ': {
-							'person': dataHelper.getDataByKey(forms, 'mark', 'person').val,
-							'desc': dataHelper.getDataByKey(forms, 'mark', 'desc').val,
-							'dept': dataHelper.getDataByKey(forms, 'mark', 'dept').val,
-						}
-					}
-					pageHelper.modifyPrevPageListNodeObject(id, node);
-
-					wx.navigateBack();
-				};
-				pageHelper.showNoneToast('修改完成，请耐心等待审批', 2000, cb);
-			} catch (err) {
-				console.log(err);
-			}
-		}
-
-		wx.requestSubscribeMessage({
-			tmplIds: [projectSetting.NOTICE_TEMP_APPT],
-			async complete() {
-				callback();
-			}
-		});
+	// 点击同意
+	approve: function () {
+		this.submitApproval(1);
 	},
 
-
+	// 点击驳回
+	reject: function () {
+		this.submitApproval(0);
+	}
 })
