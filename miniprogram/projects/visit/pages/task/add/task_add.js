@@ -53,6 +53,8 @@ Page({
 
         // 为设备类型、设备来源和标段字段添加 selectOptions
         let fields = formData.fields;
+        console.log(fields,"fields");
+        
         if (fields) {
             fields.forEach(field => {
                 if (field.mark === 'equipmentTypeId') {

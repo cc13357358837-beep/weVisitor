@@ -8,11 +8,12 @@ Page({
     pageNo: 1,
     pageSize: 10,
     keyword: '',
-    projectId: 0
+    projectId: ''
   },
 
   onLoad(options) {
     ProjectBiz.initPage(this);
+    console.log(options.projectId);
     if (options.projectId) {
       this.setData({
         projectId: Number(options.projectId)
@@ -53,7 +54,7 @@ Page({
       pageNo: this.data.pageNo,
       pageSize: this.data.pageSize,
       keyword: this.data.keyword,
-      projectId: this.data.projectId
+      projectId: this.data.projectId?this.data.projectId:null
     }, {
       loadingText: '加载中'
     }).then(data => {

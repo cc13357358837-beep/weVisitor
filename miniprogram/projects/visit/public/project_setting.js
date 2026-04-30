@@ -30,7 +30,7 @@ module.exports = { // 来访申请visit
 	TASK_NAME: '来访申请',
 	TASK_DEPT: TASK_DEPT,
 	TASK_FIELDS: [
-		{ mark: 'Name', title: '设备名', type: 'text', must: true },
+		{ mark: 'name', title: '设备名', type: 'text', must: true },
     { mark: 'sectionId', title: '标段', type: 'select', selectOptions: TASK_DEPT, must: true },
     { mark: 'model', title: '型号', type: 'text', must: true },
     { mark: 'licensePlate', title: '牌照', type: 'text', must: true },
