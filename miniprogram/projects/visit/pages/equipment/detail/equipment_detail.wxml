@@ -1,5 +1,5 @@
 <view class="container">
-  <view class="equipment-header" wx:if="{{equipmentData}}">
+  <view class="equipment-header" wx:if="{{equipmentData}}" style="background: linear-gradient(135deg, {{statusBg}} 0%, {{statusBg}}dd 100%);">
     <view class="equipment-title">
       <text class="title-text">{{equipmentData.name}}</text>
       <view class="status-badge">{{equipmentData.statusName || ''}}</view>

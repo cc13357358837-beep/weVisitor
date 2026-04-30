@@ -4,7 +4,8 @@ const ApiHelper = require('../../../../../helper/api_helper.js');
 Page({
   data: {
     equipmentData: null,
-    isLoading: false
+    isLoading: false,
+    statusBg: '#52c41a'
   },
 
   onLoad(options) {
@@ -25,9 +26,12 @@ Page({
       loadingText: '加载中'
     }).then(data => {
       if (data.code === 200 && data.data) {
+        const equipmentData = data.data;
+        const statusBg = this.getStatusColor(equipmentData.statusId);
         this.setData({
-          equipmentData: data.data,
-          isLoading: false
+          equipmentData: equipmentData,
+          isLoading: false,
+          statusBg: statusBg
         });
       } else {
         this.setData({
@@ -41,6 +45,28 @@ Page({
         isLoading: false
       });
     });
+  },
+
+  getStatusColor(statusId) {
+    switch (statusId) {
+      case 1:
+        //可用
+        return '#52c41a';
+      case 2:
+        //已授权进场
+        return '#faad14';
+      case 3:
+        //在场使用中
+        return '#1890ff';
+      case 4:
+        //待检
+        return '#1890ff';
+      case 9:
+        //未审核通过
+        return '#ff4d4f';
+      default:
+        return '#52c41a';
+    }
   },
 
   goToProjectDetail() {

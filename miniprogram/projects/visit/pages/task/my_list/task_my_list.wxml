@@ -29,7 +29,7 @@
 	<scroll-view scroll-y style="height: calc(100vh - 280rpx);" class="list-scroll">
 		<view class="text-pic-list-box padding-project">
 			<view class="item card-project shadow-project" wx:for="{{dataList.list}}" wx:key="index">
-				<view class="status-right-top bg-orange" wx:if="{{selectedTab === ''}}">{{item.processName}}</view>
+				<view class="status-right-top" style="background-color: {{item.processBg}} !important;color: white;" wx:if="{{selectedTab === ''}}">{{item.processName}}</view>
 
 				<view class="title" ><image src="../../../images/check.png" />{{item.TASK_OBJ.dept}} <text  wx:if="{{item.approvalStatusName}}" class="tag small radius margin-left-xs" style="background-color: {{item.approvalStatusBg}} !important">{{item.approvalStatusName}}</text></view>
         <view class="author">

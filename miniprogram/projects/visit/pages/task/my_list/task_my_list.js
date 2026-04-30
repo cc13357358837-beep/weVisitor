@@ -183,7 +183,8 @@ Page({
               return {
                 ...n,
 								detailId: n.id || n.ID || n._id || '',
-                approvalStatusBg:this.getStatusColor(n.approvalStatusId)
+                approvalStatusBg: this.getStatusColor(n.approvalStatusId),
+                processBg: this.getProcessColor(n.processName)
               }
             }) || [],
 						total: res.data.total || 0,
@@ -210,6 +211,22 @@ Page({
       default:
         //通过
         return '#52c41a';
+    }
+  },
+
+  getProcessColor(processName) {
+    console.log(processName, "processName");
+    switch (processName) {
+      case '入库申请':
+        return '#52c41a'; // 绿色
+      case '进场审核':
+        return '#1890ff'; // 蓝色
+      case '出场审核':
+        return '#faad14'; // 橙色
+      case '安全交底':
+        return '#722ed1'; // 紫色
+      default:
+        return '#1890ff'; // 默认蓝色
     }
   },
 
