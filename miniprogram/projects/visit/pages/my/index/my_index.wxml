@@ -32,7 +32,7 @@
 				<view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list?status=1">
 					<view wx:if="{{task&&task.status1Cnt}}" class="num">{{task.status1Cnt}}</view>
 					<image src="../../../images/my/task_1.png" />
-					<text>已审批</text>
+					<text>已同意</text>
 				</view>
 				<view class="item" bindtap="url" data-type="relaunch" data-url="../../task/my_list/task_my_list?status=2">
 					<view wx:if="{{task&&task.status2Cnt}}" class="num">{{task.status2Cnt}}</view>

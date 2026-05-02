@@ -34,7 +34,7 @@ Page({
         const equipmentSources = equipmentSourceRes.code === 200 && equipmentSourceRes.data ? equipmentSourceRes.data : [];
 
         // 获取标段列表
-        const sectionRes = await ApiHelper.post('section/list', { projectId: 0 });
+        const sectionRes = await ApiHelper.post('section/list', {});
         const sections = sectionRes.code === 200 && sectionRes.data ? sectionRes.data : [];
 
         // 处理数据格式，适配 selectOptions

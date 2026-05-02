@@ -1,0 +1,123 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  touch-action: manipulation;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 24rpx 30rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+.form-item {
+  padding: 24rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.input {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 20rpx;
+  font-size: 30rpx;
+  color: #333;
+  background-color: #f9f9f9;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+.row-label {
+  font-size: 28rpx;
+  color: #666;
+  flex-shrink: 0;
+  width: 220rpx;
+}
+
+.picker-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 72rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  background-color: #f9f9f9;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+
+.start-time-picker,
+.end-time-picker,
+.section-picker {
+  flex: 1;
+  margin-left: 20rpx;
+}
+
+.picker-icon {
+  font-size: 28rpx;
+  color: #999;
+  margin-left: 10rpx;
+}
+
+.button-group {
+  display: flex;
+  gap: 30rpx;
+  padding: 40rpx 20rpx;
+  padding-bottom: 120rpx;
+}
+
+.btn-submit {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  background-color: #0055BE;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.btn-cancel {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  background-color: #fff;
+  color: #666;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: 2rpx solid #e8e8e8;
+}

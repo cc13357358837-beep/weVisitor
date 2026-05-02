@@ -43,6 +43,15 @@
 					<view class="desc">随时提交入库申请单</view>
 				</view>
       </view>
+      <view class="item" bindtap="url" data-type="relaunch" data-url="/projects/visit/pages/task/entry/task_entry">
+				<view class="left">
+					<image mode="aspectFill" src="../../../images/home/list.png" />
+				</view> 
+        <view class="right">
+					<view class="title">进场申请</view>
+					<view class="desc">提交入场申请单</view>
+				</view>
+      </view>
       <!-- projects/visit/pages/task/add/task_add -->
 		</view>
 
