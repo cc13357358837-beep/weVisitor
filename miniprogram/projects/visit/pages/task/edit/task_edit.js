@@ -32,7 +32,7 @@ Page({
 	_loadDetail: async function () {
 		try {
 			const id = this.data.id;
-			const res = await ApiHelper.post('approval/storage/detail', {
+			const res = await ApiHelper.post('approval/entry/detail', {
 				id: Number(id)
 			});
 
@@ -43,12 +43,12 @@ Page({
 				});
 			} else {
 				this.setData({ isLoad: null });
-				pageHelper.showErrorToast(res.message || '获取详情失败');
+				pageHelper.showErrToast(res.message || '获取详情失败');
 			}
 		} catch (err) {
 			console.error('获取详情失败:', err);
 			this.setData({ isLoad: null });
-			pageHelper.showErrorToast('获取详情失败');
+			pageHelper.showErrToast('获取详情失败');
 		}
 	},
 

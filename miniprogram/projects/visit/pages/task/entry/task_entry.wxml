@@ -4,7 +4,9 @@
     <view class="card-header">设备信息</view>
     <view style="padding:24rpx 30rpx;border-bottom:1rpx solid #f0f0f0;display:flex;align-items:center;">
       <text style="font-size:28rpx;color:#666;width:220rpx;flex-shrink:0;">设备名称</text>
-      <picker mode="selector" range="{{equipmentOptions}}" range-key="name" bindchange="onEquipmentChange">
+      <!-- 详情模式显示文本，新增模式显示选择器 -->
+      <view wx:if="{{isDetail}}" style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:#333;">{{formData.equipmentName || '-'}}</view>
+      <picker wx:else mode="selector" range="{{equipmentOptions}}" range-key="name" bindchange="onEquipmentChange">
         <view style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:{{formData.equipmentName?'#333':'#999'}};">{{formData.equipmentName || '请选择设备'}}</view>
       </picker>
     </view>
@@ -15,20 +17,36 @@
     <view class="card-header">使用申请信息</view>
     <view style="padding:24rpx 30rpx;border-bottom:1rpx solid #f0f0f0;display:flex;align-items:center;">
       <text style="font-size:28rpx;color:#666;width:220rpx;flex-shrink:0;">申请使用开始时间</text>
-      <picker mode="date" value="{{formData.plannedUseStartTime}}" bindchange="onStartTimeChange">
+      <!-- 详情模式显示文本，新增模式显示选择器 -->
+      <view wx:if="{{isDetail}}" style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:#333;">{{formData.plannedUseStartTime || '-'}}</view>
+      <picker wx:else mode="date" value="{{formData.plannedUseStartTime}}" bindchange="onStartTimeChange">
         <view style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:{{formData.plannedUseStartTime?'#333':'#999'}};">{{formData.plannedUseStartTime || '请选择开始时间'}}</view>
       </picker>
     </view>
     <view style="padding:24rpx 30rpx;border-bottom:1rpx solid #f0f0f0;display:flex;align-items:center;">
       <text style="font-size:28rpx;color:#666;width:220rpx;flex-shrink:0;">申请使用结束时间</text>
-      <picker mode="date" value="{{formData.plannedUseEndTime}}" bindchange="onEndTimeChange">
+      <!-- 详情模式显示文本，新增模式显示选择器 -->
+      <view wx:if="{{isDetail}}" style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:#333;">{{formData.plannedUseEndTime || '-'}}</view>
+      <picker wx:else mode="date" value="{{formData.plannedUseEndTime}}" bindchange="onEndTimeChange">
         <view style="background-color:#f9f9f9;padding:24rpx 30rpx;border-radius:12rpx;font-size:28rpx;color:{{formData.plannedUseEndTime?'#333':'#999'}};">{{formData.plannedUseEndTime || '请选择结束时间'}}</view>
       </picker>
     </view>
   </view>
 
-  <!-- 提交按钮 -->
-  <view class="button-group">
+  <!-- 提交按钮（仅新增模式显示） -->
+  <view wx:if="{{!isDetail}}" class="button-group">
     <button class="btn-submit" bindtap="submit">提交申请</button>
+    <button class="btn-cancel" bindtap="goBack">返回列表</button>
+  </view>
+
+  <!-- 审批按钮（仅详情模式且needsApproval=true时显示） -->
+  <view wx:if="{{isDetail && needsApproval}}" class="button-group">
+    <button class="btn-submit" bindtap="approve">通过</button>
+    <button class="btn-reject" bindtap="reject">驳回</button>
+  </view>
+
+  <!-- 返回按钮（详情模式且已审批过的不显示审批按钮时） -->
+  <view wx:if="{{isDetail && !needsApproval}}" class="button-group">
+    <button class="btn-cancel" bindtap="goBack">返回列表</button>
   </view>
 </view>

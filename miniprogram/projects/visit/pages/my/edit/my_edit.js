@@ -51,12 +51,12 @@ Page({
 				this._applyUser(user);
 			} else {
 				this.setData({ isLoad: null });
-				pageHelper.showErrorToast('获取个人信息失败');
+				pageHelper.showErrToast('获取个人信息失败');
 			}
 		} catch (err) {
 			console.error('获取个人信息失败:', err);
 			this.setData({ isLoad: null });
-			pageHelper.showErrorToast('获取个人信息失败');
+			pageHelper.showErrToast('获取个人信息失败');
 		}
 	},
 
@@ -126,11 +126,11 @@ Page({
 				}
 				pageHelper.showSuccToast('修改成功', 1500, callback);
 			} else {
-				pageHelper.showErrorToast('修改失败，请重试');
+				pageHelper.showErrToast('修改失败，请重试');
 			}
 		} catch (err) {
 			console.error('修改个人信息失败:', err);
-			pageHelper.showErrorToast('修改失败，请重试');
+			pageHelper.showErrToast('修改失败，请重试');
 		}
 	}
 })

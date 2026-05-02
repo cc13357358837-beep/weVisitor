@@ -2,5 +2,5 @@
 	"usingComponents": { 
 		"cmpt-form-show": "../../../cmpts/form/form_show_cmpt"  
 	},
-	"navigationBarTitleText": "入场申请"
+	"navigationBarTitleText": "进场申请"
 }

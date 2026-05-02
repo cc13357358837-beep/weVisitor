@@ -14,9 +14,6 @@
 		<view class="tab-item {{selectedTab === '2' ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
 			<text>离场审核</text>
 		</view>
-		<view class="tab-item {{selectedTab === '3' ? 'active' : ''}}" bindtap="switchTab" data-tab="3">
-			<text>安全交底</text>
-		</view>
 	</view>
 
 	<!-- 搜索栏 -->
@@ -54,7 +51,14 @@
 				</view>
 
 				<view class="data data-button" wx:if="{{isEdit}}">
-					<button wx:if="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?id={{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
+					<!-- 全部tab：根据processType判断跳转页面 -->
+					<button wx:if="{{selectedTab === '' && item.processType === 'entry'}}" bindtap="goToEntryDetail" data-id="{{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
+					<button wx:elif="{{selectedTab === '' && item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?id={{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
+					<button wx:elif="{{selectedTab === ''}}" bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">详情/修改</button>
+					<!-- 入场审核tab跳转task_entry -->
+					<button wx:elif="{{selectedTab === '1'}}" bindtap="goToEntryDetail" data-id="{{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
+					<!-- 其他tab跳转task_edit -->
+					<button wx:elif="{{item.TASK_STATUS!=0}}" bindtap="url" data-url="../edit/task_edit?id={{item.id}}" class="btn mid bg-gray text-black">查看详情</button>
 					<button wx:else bindtap="url" data-url="../edit/task_edit?cateId={{cateId}}&id={{item.detailId}}" class="btn mid bg-gray text-black">详情/修改</button>
 				</view>
 

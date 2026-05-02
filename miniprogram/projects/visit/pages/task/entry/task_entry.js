@@ -8,12 +8,17 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isDetail: false,
+    detailId: 0,
+    needsApproval: false, // 是否需要审批（approvalStatusId为null时需要显示审批按钮）
     formData: {
       name: '',
       plannedUseStartTime: '',
       plannedUseEndTime: '',
       equipmentId: 0,
-      equipmentName: ''
+      equipmentName: '',
+      sectionId: 0,
+      sectionName: ''
     },
     sections: [],
     sectionOptions: [],
@@ -26,7 +31,23 @@ Page({
    */
   onLoad: async function (options) {
     ProjectBiz.initPage(this);
+
+    // 判断是否是详情模式
+    const isDetail = options && options.id && parseInt(options.id) > 0;
     
+    if (isDetail) {
+      // 详情模式：调用详情接口
+      await this.loadDetail(options.id);
+    } else {
+      // 新增模式：加载下拉选项
+      await this.loadOptions();
+    }
+  },
+
+  /**
+   * 加载下拉选项
+   */
+  async loadOptions() {
     // 获取标段列表
     const sectionRes = await ApiHelper.post('section/list', { projectId: 0 });
     const sections = sectionRes.code === 200 && sectionRes.data ? sectionRes.data : [];
@@ -41,18 +62,66 @@ Page({
       pageSize: 100,
     });
     const equipmentList = equipmentRes.code === 200 && equipmentRes.data ? equipmentRes.data.records : [];
-    console.log(equipmentRes,equipmentList,"equipmentList");
     const equipmentOptions = equipmentList.map(item => ({
       id: item.id,
       name: item.name || ''
     }));
 
     this.setData({
+      isDetail: false,
       sections,
       sectionOptions,
       equipmentList,
       equipmentOptions
     });
+  },
+
+  /**
+   * 加载详情数据
+   */
+  async loadDetail(id) {
+    try {
+      wx.showLoading({
+        title: '加载中'
+      });
+
+      // 调用详情接口
+      const detailRes = await ApiHelper.post('approval/entry/detail', { id });
+      
+      wx.hideLoading();
+
+      if (detailRes.code === 200 && detailRes.data) {
+        const detail = detailRes.data;
+        
+        // 判断是否需要显示审批按钮（approvalStatusId为null表示待审批）
+        const needsApproval = detail.approvalStatusId === null || detail.approvalStatusId === undefined;
+        
+        // 设置表单数据
+        this.setData({
+          isDetail: true,
+          detailId: id,
+          needsApproval: needsApproval,
+          'formData.equipmentId': detail.equipmentId || 0,
+          'formData.equipmentName': detail.equipmentName || '',
+          'formData.plannedUseStartTime': detail.plannedUseStartTime || '',
+          'formData.plannedUseEndTime': detail.plannedUseEndTime || '',
+          'formData.sectionId': detail.sectionId || 0,
+          'formData.sectionName': detail.sectionName || ''
+        });
+      } else {
+        wx.showToast({
+          title: detailRes.message || '加载失败',
+          icon: 'none'
+        });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      console.log(err);
+      wx.showToast({
+        title: '加载失败',
+        icon: 'none'
+      });
+    }
   },
 
   /**
@@ -161,6 +230,64 @@ Page({
         title: '提交失败',
         icon: 'none'
       });
+    }
+  },
+
+  /**
+   * 通过审批
+   */
+  approve: async function () {
+    if (!await PassportBiz.loginMustBackWin(this)) return;
+
+    try {
+      wx.showLoading({ title: '处理中' });
+      const res = await ApiHelper.post('approval/entry/action', {
+        id: this.data.detailId,
+        status: 1 // 1=通过
+      });
+      wx.hideLoading();
+
+      if (res.code === 200) {
+        wx.showToast({ title: '审批通过', icon: 'success' });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } else {
+        wx.showToast({ title: res.message || '操作失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      console.log(err);
+      wx.showToast({ title: '操作失败', icon: 'none' });
+    }
+  },
+
+  /**
+   * 驳回审批
+   */
+  reject: async function () {
+    if (!await PassportBiz.loginMustBackWin(this)) return;
+
+    try {
+      wx.showLoading({ title: '处理中' });
+      const res = await ApiHelper.post('approval/entry/action', {
+        id: this.data.detailId,
+        status: 0 // 0=驳回
+      });
+      wx.hideLoading();
+
+      if (res.code === 200) {
+        wx.showToast({ title: '已驳回', icon: 'success' });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } else {
+        wx.showToast({ title: res.message || '操作失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      console.log(err);
+      wx.showToast({ title: '操作失败', icon: 'none' });
     }
   },
 

@@ -158,9 +158,6 @@ Page({
 			case '2':
 				url = 'approval/exit/list'; // 离场审核
 				break;
-			case '3':
-				url = 'approval/safety/list'; // 安全交底
-				break;
 			default:
 				// 默认加载全部，这里可以根据实际需求选择一个默认接口
 				url = 'approval/center/getAllApprovalList';
@@ -184,7 +181,8 @@ Page({
                 ...n,
 								detailId: n.id || n.ID || n._id || '',
                 approvalStatusBg: this.getStatusColor(n.approvalStatusId),
-                processBg: this.getProcessColor(n.processName)
+                processBg: this.getProcessColor(n.processName),
+								applyTime: this.formatTime(n.applyTime) // 格式化时间
               }
             }) || [],
 						total: res.data.total || 0,
@@ -223,11 +221,18 @@ Page({
         return '#1890ff'; // 蓝色
       case '出场审核':
         return '#faad14'; // 橙色
-      case '安全交底':
-        return '#722ed1'; // 紫色
       default:
         return '#1890ff'; // 默认蓝色
     }
+  },
+
+  /**
+   * 格式化时间：把 "2026-05-03T00:00:00.000+00:00" 转换成 "2026-05-03 00:00:00"
+   */
+  formatTime(timeStr) {
+    if (!timeStr) return '';
+    // 把T替换成空格，然后截取到秒（去掉.xxx和时区部分）
+    return timeStr.replace('T', ' ').substring(0, 19);
   },
 
 	/** 搜索菜单设置 */
@@ -262,6 +267,17 @@ Page({
 		});
 
 	},
+
+	/**
+	 * 跳转进场审核详情页
+	 */
+	goToEntryDetail: function (e) {
+		let id = pageHelper.dataset(e, 'id');
+		wx.navigateTo({
+			url: `/projects/visit/pages/task/entry/task_entry?id=${id}`
+		});
+	},
+
 	bindDelTap: async function (e) {
 		if (!await PassportBiz.loginMustBackWin(this)) return;
 

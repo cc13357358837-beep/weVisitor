@@ -121,3 +121,15 @@
   border-radius: 44rpx;
   border: 2rpx solid #e8e8e8;
 }
+
+.btn-reject {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  background-color: #fff;
+  color: #ff4d4f;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius: 44rpx;
+  border: 2rpx solid #ff4d4f;
+}
