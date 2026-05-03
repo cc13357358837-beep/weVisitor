@@ -43,6 +43,18 @@
       <text class="label">审核人员</text>
       <text class="value">{{equipmentData.constructionReviewerUserName || '-'}}</text>
     </view>
+    <view class="info-item">
+      <text class="label">审核状态</text>
+      <text class="value" style="color: {{equipmentData.approvalStatusId === 1 ? '#ff4d4f' : equipmentData.approvalStatusId === 2?'#52c41a':'#1890ff'}}">{{equipmentData.approvalStatusName || '待审核'}}</text>
+    </view>
+    <view class="info-item" wx:if="{{equipmentData.approvalStatusId===1}}">
+      <text class="label">审核原因</text>
+      <text class="value">{{equipmentData.approvalReason || '-'}}</text>
+    </view>
+    <view class="info-item" wx:if="{{equipmentData.approvalStatusId}}">
+      <text class="label">审核时间</text>
+      <text class="value">{{equipmentData.applicationTime || '-'}}</text>
+    </view>
   </view>
   
   <view wx:if="{{isLoading}}" class="loading">
@@ -51,5 +63,11 @@
   
   <view wx:if="{{!isLoading && !equipmentData}}" class="empty">
     <text>暂无设备数据</text>
+  </view>
+
+  <!-- 审批按钮 -->
+  <view wx:if="{{equipmentData && equipmentData.showApproveButton}}" class="button-group">
+    <button class="btn-submit" bindtap="approve">同意</button>
+    <button class="btn-reject" bindtap="reject">驳回</button>
   </view>
 </view>

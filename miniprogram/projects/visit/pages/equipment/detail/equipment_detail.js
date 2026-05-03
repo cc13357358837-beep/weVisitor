@@ -1,5 +1,6 @@
 const ProjectBiz = require('../../../biz/project_biz.js');
 const ApiHelper = require('../../../../../helper/api_helper.js');
+const PassportBiz = require('../../../../../comm/biz/passport_biz.js');
 
 Page({
   data: {
@@ -29,7 +30,10 @@ Page({
         const equipmentData = data.data;
         const statusBg = this.getStatusColor(equipmentData.statusId);
         this.setData({
-          equipmentData: equipmentData,
+          equipmentData: {
+            ...equipmentData,
+            approvalTime:this.formatTime(equipmentData.approvalTime),
+          },
           isLoading: false,
           statusBg: statusBg
         });
@@ -46,7 +50,11 @@ Page({
       });
     });
   },
-
+  formatTime(timeStr) {
+    if (!timeStr) return '';
+    // 把T替换成空格，然后截取到秒（去掉.xxx和时区部分）
+    return timeStr.replace('T', ' ').substring(0, 19);
+  },
   getStatusColor(statusId) {
     switch (statusId) {
       case 1:
@@ -74,6 +82,70 @@ Page({
       wx.navigateTo({
         url: '/projects/visit/pages/project/detail/project_detail?id=' + this.data.equipmentData.projectId
       });
+    }
+  },
+
+  /**
+   * 通过审批
+   */
+  approve: async function () {
+    if (!await PassportBiz.loginMustBackWin(this)) return;
+
+    const equipmentData = this.data.equipmentData;
+    if (!equipmentData) return;
+
+    try {
+      wx.showLoading({ title: '处理中' });
+      const res = await ApiHelper.post('approval/storage/action', {
+        id: equipmentData.id,
+        status: 1 // 1=通过
+      });
+      wx.hideLoading();
+
+      if (res.code === 200) {
+        wx.showToast({ title: '审批通过', icon: 'success' });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } else {
+        wx.showToast({ title: res.message || '操作失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      console.log(err);
+      wx.showToast({ title: '操作失败', icon: 'none' });
+    }
+  },
+
+  /**
+   * 驳回审批
+   */
+  reject: async function () {
+    if (!await PassportBiz.loginMustBackWin(this)) return;
+
+    let equipmentData = this.data.equipmentData;
+    if (!equipmentData) return;
+
+    try {
+      wx.showLoading({ title: '处理中' });
+      const res = await ApiHelper.post('approval/storage/action', {
+        id: equipmentData.id,
+        status: 0 // 0=驳回
+      });
+      wx.hideLoading();
+
+      if (res.code === 200) {
+        wx.showToast({ title: '已驳回', icon: 'success' });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } else {
+        wx.showToast({ title: res.message || '操作失败', icon: 'none' });
+      }
+    } catch (err) {
+      wx.hideLoading();
+      console.log(err);
+      wx.showToast({ title: '操作失败', icon: 'none' });
     }
   }
 });

@@ -59,7 +59,8 @@ Page({
     // 获取设备列表 - 使用分页查询，获取所有设备
     const equipmentRes = await ApiHelper.post('device/listByProId', {
       pageNo: 1,
-      pageSize: 100,
+      pageSize: 999,
+      statusId:2
     });
     const equipmentList = equipmentRes.code === 200 && equipmentRes.data ? equipmentRes.data.records : [];
     const equipmentOptions = equipmentList.map(item => ({

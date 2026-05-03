@@ -32,19 +32,15 @@ Page({
 	_loadDetail: async function () {
 		try {
 			const id = this.data.id;
-			const res = await ApiHelper.post('approval/storage/detail', {
+			const res = await ApiHelper.post('approval/entry/detail', {
 				id: Number(id)
 			});
 
 			if (res.code === 200 && res.data) {
 				this.setData({
 					isLoad: true,
-					task:{
-              ...res.data,
-              latestUpdateTime:this.formatTime(res.data.latestUpdateTime),
-              approvalTime:this.formatTime(res.data.approvalTime)
-            }
-          })
+					task: res.data
+				});
 			} else {
 				this.setData({ isLoad: null });
 				pageHelper.showErrToast(res.message || '获取详情失败');
@@ -55,11 +51,7 @@ Page({
 			pageHelper.showErrToast('获取详情失败');
 		}
 	},
-  formatTime(timeStr) {
-    if (!timeStr) return '';
-    // 把T替换成空格，然后截取到秒（去掉.xxx和时区部分）
-    return timeStr.replace('T', ' ').substring(0, 19);
-  },
+
 	/**
 	 * 生命周期函数--监听页面初次渲染完成
 	 */
@@ -130,7 +122,7 @@ Page({
 		}
 
 		try {
-			const res = await ApiHelper.post('approval/storage/action', {
+			const res = await ApiHelper.post('approval/entry/action', {
 				id: task.id,
 				status: status,
 				comment: approvalReason || ''
@@ -141,7 +133,7 @@ Page({
 					title: '审核成功',
 					icon: 'success'
 				});
-				// 重新调用查询接口刷新数据
+				// 重新加载数据
 				await this._loadDetail();
 				setTimeout(() => {
 					wx.navigateBack();

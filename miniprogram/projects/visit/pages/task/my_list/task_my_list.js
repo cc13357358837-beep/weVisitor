@@ -69,7 +69,8 @@ Page({
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-
+		// 每次显示页面时刷新列表数据
+		this.loadData();
 	},
 
 	/**
@@ -182,7 +183,7 @@ Page({
 								detailId: n.id || n.ID || n._id || '',
                 approvalStatusBg: this.getStatusColor(n.approvalStatusId),
                 processBg: this.getProcessColor(n.processName),
-								applyTime: this.formatTime(n.applyTime) // 格式化时间
+                applyTime: this.formatTime(n.applyTime||n.approvalTime), // 格式化时间
               }
             }) || [],
 						total: res.data.total || 0,
@@ -206,9 +207,12 @@ Page({
       case 1:
         //不通过
         return 'red';
-      default:
+      case 2:
         //通过
-        return '#52c41a';
+          return '#52c41a';
+      default:
+        //未审核
+        return '#1890ff';
     }
   },
 
@@ -272,9 +276,9 @@ Page({
 	 * 跳转进场审核详情页
 	 */
 	goToEntryDetail: function (e) {
-		let id = pageHelper.dataset(e, 'id');
+    let id = pageHelper.dataset(e, 'id');
 		wx.navigateTo({
-			url: `/projects/visit/pages/task/entry/task_entry?id=${id}`
+			url: `/projects/visit/pages/task/entry_detail/entry_detail?id=${id}`
 		});
 	},
 

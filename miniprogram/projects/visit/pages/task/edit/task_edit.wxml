@@ -21,28 +21,32 @@
 				</view>
 				<view class="form-item">
 					<view class="label">租赁单位</view>
-					<view class="value">{{task.rentalUnit || '暂无'}}</view>
+					<view class="value">{{task.rentalOrganizationName || '暂无'}}</view>
 				</view>
 				<view class="form-item">
 					<view class="label">申请时间</view>
-					<view class="value">{{task.applyTime || '暂无'}}</view>
+					<view class="value">{{task.latestUpdateTime || '暂无'}}</view>
 				</view>
 			</view>
 
 			<!-- 已审核状态显示 -->
-			<view class="card-project shadow-project margin-bottom" wx:if="{{task.approvalStatusId !== null && task.approvalStatusId !== undefined}}">
+			<view class="card-project shadow-project margin-bottom" wx:if="{{!task.showApproveButton}}">
 				<view class="form-item">
 					<view class="label">审批状态</view>
-					<view class="value" style="color: {{task.approvalStatusId === 1 ? '#52c41a' : '#ff4d4f'}}">{{task.approvalStatusName || '暂无'}}</view>
+					<view class="value" style="color: {{task.approvalStatusId === 1 ? '#ff4d4f' : '#52c41a'}}">{{task.approvalStatusName || '暂无'}}</view>
 				</view>
-				<view class="form-item" wx:if="{{task.comment}}">
+				<view class="form-item">
 					<view class="label">审核理由</view>
-					<view class="value">{{task.comment}}</view>
+					<view class="value">{{task.approvalReason||'-'}}</view>
+				</view>
+        <view class="form-item">
+					<view class="label">审核时间</view>
+					<view class="value">{{task.approvalTime}}</view>
 				</view>
 			</view>
 
 			<!-- 待审核时显示审核按钮 -->
-			<block wx:if="{{task.approvalStatusId === null || task.approvalStatusId === undefined}}">
+			<block wx:if="{{task.showApproveButton}}">
 				<view class="card-project shadow-project margin-bottom">
 					<view class="form-item">
 						<view class="label">审核理由</view>

@@ -34,6 +34,7 @@
 					<view class="desc">随时查看设备状态实时对设备进行评价</view>
 				</view>
       </view>
+      <!--  wx:if="{{showStorageApply}}" -->
       <view class="item" bindtap="url" data-type="relaunch" data-url="/projects/visit/pages/task/add/task_add">
 				<view class="left">
 					<image mode="aspectFill" src="../../../images/home/list.png" />
@@ -43,7 +44,8 @@
 					<view class="desc">随时提交入库申请单</view>
 				</view>
       </view>
-      <view class="item" bindtap="url" data-type="relaunch" data-url="/projects/visit/pages/task/entry/task_entry">
+      <!-- wx:if="{{showEntryApply}}" -->
+      <view class="item"  bindtap="url" data-type="relaunch" data-url="/projects/visit/pages/task/entry/task_entry">
 				<view class="left">
 					<image mode="aspectFill" src="../../../images/home/list.png" />
 				</view> 

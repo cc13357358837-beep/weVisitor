@@ -10,10 +10,11 @@
         <view class="equipment-header">
           <text class="equipment-name">{{item.name}}</text>
         </view>
-        <text class="equipment-status">{{item.statusName || ''}}</text>
+        <text style="color: #c3c3c3;">设备状态：</text>
+        <text class="equipment-status status-badge"style="background-color: {{item.statusBg}};color:white;">{{item.statusName || ''}}</text>
       </view>
       <view class="arrow-icon">
-        <view class="status-badge" style="background-color: {{item.statusBg}}">{{item.statusName || ''}}</view>
+        <view style="color: {{item.approvalStatusId === 1 ? '#ff4d4f' : item.approvalStatusId === 2?'#52c41a':'#1890ff'}}">{{item.approvalStatusName || '待审核'}}</view>
         <text class="arrow">›</text>
       </view>
     </view>
